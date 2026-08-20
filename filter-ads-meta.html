@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ads Filter — AMPER88 & SHOPISLOT</title>
+  <style>
+    :root{--bg:#0e1016;--card:#171b25;--line:#2b3241;--text:#f4f6fb;--muted:#aeb7c6;--red:#ff5d67;--amber:#f3bd4a;--green:#4ed692;--blue:#67a7ff}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(135deg,#0b0d13,#141925);color:var(--text);font:14px Arial,sans-serif}
+    main{max-width:1480px;margin:auto;padding:28px 18px 60px} h1{margin:0;font-size:28px} h1 span{color:#f0c75e} .sub{color:var(--muted);margin:8px 0 22px;line-height:1.5}
+    .card{background:rgba(23,27,37,.96);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 12px 28px #0002}
+    textarea{display:block;width:100%;min-height:280px;resize:vertical;background:#0e1118;color:#eaf0ff;border:1px solid #394255;border-radius:10px;padding:14px;font:12px Consolas,monospace;line-height:1.45}
+    .bar{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:12px}.field{display:grid;gap:6px;color:var(--muted);font-size:12px}.field input,.field select{width:130px;background:#0e1118;color:white;border:1px solid #394255;border-radius:8px;padding:9px}.field select{width:160px}
+    button{border:0;border-radius:9px;padding:11px 16px;font-weight:bold;cursor:pointer;background:#e9bc49;color:#17120a}button.alt{background:#283247;color:white}button:hover{filter:brightness(1.1)}
+    .summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:10px}.sum{border:1px solid var(--line);border-radius:10px;padding:12px;background:#11151e}.sum b{display:block;font-size:22px;margin-top:6px}.sum small{color:var(--muted)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:1130px;background:#11151e}th,td{padding:11px 10px;border-bottom:1px solid #252c39;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#1c2230;color:#cbd5e6;font-size:11px;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}.name{font-weight:bold;min-width:300px}.meta{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4}.money{font-variant-numeric:tabular-nums;white-space:nowrap}.pct{font-weight:bold}.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:bold;white-space:nowrap}.mahal{background:#441c24;color:#ffabb2}.hold-history{background:#4a3916;color:#ffd982}.hold{background:#40371d;color:#ffe18e}.go{background:#133d2d;color:#9cf0c5}.watch{background:#1d3150;color:#aaccff}.active{background:#303644;color:#d3d8e1}.danger{background:#261319}.danger td{border-color:#542a32}.danger .name{color:#ffb1b6}.empty{text-align:center;color:var(--muted);padding:26px}.note{margin-top:7px;max-width:260px;font-size:11px;color:var(--muted);line-height:1.35}
+    @media(max-width:700px){main{padding:18px 12px}.summary{grid-template-columns:repeat(2,1fr)}h1{font-size:22px}.bar>*{flex:1}.bar button{flex:1 1 42%}.field input,.field select{width:100%}}
+  </style>
+</head>
+<body>
+<main>
+  <h1>FILTER <span>IKLAN ADS MKT328</span></h1>
+  <p class="sub">Paste data campaign. Filter memakai <b>SPEND</b> dan <b>CPR saat ini</b>
+  <section class="card">
+    <textarea id="raw" placeholder="Paste data campaign di sini..."></textarea>
+    <div class="bar">
+      <label class="field">CPR mahal di atas<input id="cprLimit" type="number" value="5" step=".01"></label>
+      <label class="field">Mulai cek mahal (%)<input id="earlyPct" type="number" value="9" step="1"></label>
+      <label class="field">Batas lanjut (%)<input id="goPct" type="number" value="20" step="1"></label>
+      <label class="field">Pengecualian setelah (%)<input id="historyPct" type="number" value="15" step="1"></label>
+      <label class="field">CPR MAX murah di bawah<input id="historyCpr" type="number" value="4" step=".01"></label>
+      <label class="field">Filter situs<select id="siteFilter"><option value="ALL">Semua situs</option><option value="AMPER88">AMPER88</option><option value="SHOPISLOT">SHOPISLOT</option></select></label>
+      <label class="field">Cari No Akun<input id="accountFilter" type="search" placeholder="Contoh: 7841"></label>
+      <button id="process">FILTER SEKARANG</button><button class="alt" id="clear">HAPUS DATA</button>
+    </div>
+  </section>
+  <section class="summary" id="summary"></section>
+  <section class="card" style="padding:12px"><div class="table-wrap"><table><thead><tr><th>Status</th><th>No Akun</th><th>Situs / Agency</th><th>Campaign & Link</th><th>Budget</th><th>Spend Saat Ini</th><th>% Budget</th><th>Result</th><th>CPR Saat Ini</th><th>CPR Max</th><th>CPM</th><th>CPC</th><th>Penjelasan</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id); const money=n=>Number.isFinite(n)?'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+function num(value){if(value==null)return null;const t=String(value).replace(/[$,\s]/g,'').trim();if(!t||/active/i.test(t))return null;const n=parseFloat(t);return Number.isFinite(n)?n:null}
+function valueOf(block,label){const re=new RegExp('(?:^|\\n)\\s*'+label.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')+'\\s*:\\s*([^\\n\\r]*)','i');const m=block.match(re);return m?m[1].trim():''}
+function parse(raw){
+  const starts=[...raw.matchAll(/^(?=[ \t]*(?:AMP\w*|SHP\w*)x)/gim)].map(m=>m.index); if(!starts.length)return [];
+  starts.push(raw.length); const out=[];
+  for(let i=0;i<starts.length-1;i++){
+    const block=raw.slice(starts[i],starts[i+1]).trim(); const first=block.split(/\r?\n/)[0].trim();
+    const site=/^\s*AMP/i.test(first)?'AMPER88':/^\s*SHP/i.test(first)?'SHOPISLOT':'LAINNYA';
+    const account=(first.match(/\(([^)]+)\)/)||[])[1]||'—'; const agency=(first.match(/^(?:AMP\w*|SHP\w*)x([^\s]+)/i)||[])[1]||'—'; const gmt=(first.match(/GMT\s*([+-]\s*\d+)/i)||[])[1]?.replace(/\s/g,'')||'—';
+    const budgetMatch=first.match(/\$\s*([\d,.]+)/); const budget=budgetMatch?num(budgetMatch[1]):null;
+    const spendText=valueOf(block,'SPEND'); const cprText=valueOf(block,'CPR'); const spend=num(spendText); const cpr=num(cprText); const cprMax=num(valueOf(block,'CPR MAX')); const result=num(valueOf(block,'RESULT')); const cpm=num(valueOf(block,'CPM')); const cpc=num(valueOf(block,'CPC'));
+    const link=(block.match(/LINK ADS\s*:\s*(https?:\/\/\S+)/i)||[])[1]||''; const spendMaxText=valueOf(block,'SPEND MAX'); const active=/active/i.test(spendMaxText); const preparing=/preparing/i.test(spendMaxText);
+    const statusText=[valueOf(block,'STATUS'),valueOf(block,'ON/OFF'),valueOf(block,'SPEND MAX')].join(' ');
+    const inactive=/\b(?:off|disabled)\b/i.test(first+' '+statusText);
+    if(!inactive)out.push({first,site,account,agency,gmt,budget,spend,cpr,cprMax,result,cpm,cpc,link,active,preparing});
+  } return out;
+}
+function settings(){return {limit:+$('cprLimit').value||5,early:(+$('earlyPct').value||9)/100,go:(+$('goPct').value||20)/100,hist:(+$('historyPct').value||15)/100,histCpr:+$('historyCpr').value||4}}
+function status(x,s){
+  if(x.spend===null||x.spend===0)return {key:'active',label:x.preparing?'PREPARING':x.active?'ACTIVE — BELUM ADA SPEND':'BELUM ADA DATA',note:'Belum ada spend/CPR untuk dianalisis.'};
+  const p=x.budget?x.spend/x.budget:null;
+  if(p!==null&&p>=.10&&x.cpr===null)return {key:'mahal',label:'IKLAN MAHAL',note:'Spend sudah mencapai 10% budget, tetapi CPR saat ini belum keluar.'};
+  if(!x.result||x.result<=0)return {key:'watch',label:'BELUM ADA HASIL',note:'Spend sudah jalan, tetapi result belum muncul.'};
+  if(p!==null&&p>s.hist&&x.cpr>s.limit&&x.cprMax!==null&&x.cprMax<s.histCpr)return {key:'hold-history',label:'TAHAN DULU',note:'Kemarin masih dapat murah: CPR MAX '+money(x.cprMax)+'.'};
+  if(p!==null&&p>=s.early&&x.cpr>s.limit)return {key:'mahal',label:'IKLAN MAHAL',note:'CPR saat ini '+money(x.cpr)+' di atas batas '+money(s.limit)+'.'};
+  if(p!==null&&p>=s.go&&x.cpr<=s.limit)return {key:'go',label:'LANJUTKAN',note:'Lolos evaluasi '+Math.round(s.go*100)+'% budget dengan CPR masih aman.'};
+  if(p!==null&&p>=.10&&x.cpr<=s.limit)return {key:'hold',label:'TAHAN DULU',note:'CPR aman. Tahan sampai '+Math.round(s.go*100)+'% budget.'};
+  return {key:'watch',label:'PANTAU',note:p===null?'Budget tidak terbaca.':'Spend belum masuk batas evaluasi.'};
+}
+function run(){
+  const s=settings(), filter=$('siteFilter').value, accountQuery=$('accountFilter').value.trim(); let data=parse($('raw').value).map(x=>({...x,st:status(x,s)})); if(filter!=='ALL')data=data.filter(x=>x.site===filter); if(accountQuery)data=data.filter(x=>x.account.includes(accountQuery));
+  const rank={mahal:0,'hold-history':1,hold:2,watch:3,go:4,active:5}; data.sort((a,b)=>rank[a.st.key]-rank[b.st.key] || (b.cpr??-1)-(a.cpr??-1));
+  const total=data.reduce((n,x)=>n+(x.spend||0),0), mahal=data.filter(x=>x.st.key==='mahal').length, hold=data.filter(x=>x.st.key==='hold-history'||x.st.key==='hold').length, go=data.filter(x=>x.st.key==='go').length;
+  $('summary').innerHTML=[['Campaign terbaca',data.length,''],['Total spend',money(total),''],['Iklan mahal',mahal,'color:var(--red)'],['Tahan dulu',hold,'color:var(--amber)'],['Lanjutkan',go,'color:var(--green)']].map(x=>`<div class="sum"><small>${x[0]}</small><b style="${x[2]}">${x[1]}</b></div>`).join('');
+  $('rows').innerHTML=data.length?data.map(x=>{const p=x.budget&&x.spend!==null?x.spend/x.budget:null;const name=x.first.replace(/</g,'&lt;');const blank=v=>Number.isFinite(v)?money(v):'';return `<tr class="${x.st.key==='mahal'?'danger':''}"><td><span class="badge ${x.st.key}">${x.st.label}</span></td><td><b style="font-size:16px">${x.account}</b><div class="meta">GMT ${x.gmt}</div></td><td><b>${x.site}</b><div class="meta">Agency: ${x.agency}</div></td><td class="name">${name}<div class="meta">${x.link?`<a href="${x.link}" target="_blank" rel="noreferrer" style="color:#8bbcff">${x.link}</a>`:'Link tidak ada'}</div></td><td class="money">${blank(x.budget)}</td><td class="money">${x.preparing&&x.spend===null?'PREPARING':x.active&&x.spend===null?'ACTIVE':blank(x.spend)}</td><td class="pct">${p===null?'':(p*100).toFixed(2)+'%'}</td><td>${x.result??''}</td><td class="money"><b>${blank(x.cpr)}</b></td><td class="money">${blank(x.cprMax)}</td><td class="money">${blank(x.cpm)}</td><td class="money">${blank(x.cpc)}</td><td><div class="note">${x.st.note}</div></td></tr>`}).join(''):'<tr><td colspan="13" class="empty">Tidak ada campaign yang bisa dibaca. Pastikan judul dimulai AMP...x atau SHP...x.</td></tr>';
+  localStorage.setItem('adsFilterRaw',$('raw').value);
+}
+$('process').onclick=run; $('clear').onclick=()=>{$('raw').value='';localStorage.removeItem('adsFilterRaw');run()}; $('siteFilter').onchange=run; $('accountFilter').oninput=run; run();
+</script>
+</body>
+</html>

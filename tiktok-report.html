@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EDUTOTO Report</title>
+
+  <style>
+    body{margin:0;background:#0d0d0e;color:#f7f4ec;font:15px Arial}
+    main{max-width:1200px;margin:auto;padding:32px 20px}
+    .ey,b{color:#e9b84a}
+    h1{margin:5px 0;color:#fff0b0}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .card{background:#19191c;border:1px solid #393939;border-radius:14px;padding:18px;margin-bottom:18px}
+    textarea,pre{box-sizing:border-box;width:100%;height:440px;padding:14px;background:#101012;color:#f7f4ec;border:1px solid #494949;border-radius:9px;font:13px/1.55 Consolas,monospace;white-space:pre-wrap;overflow:auto}
+    button{border:0;border-radius:8px;padding:10px 14px;margin:10px 7px 0 0;font-weight:bold;cursor:pointer;background:#303035;color:white}
+    .p{background:linear-gradient(135deg,#f3cf70,#e9b84a);color:#241904}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+    .stat{padding:10px;border:1px solid #393939;border-radius:8px}
+    .stat b{display:block;font-size:19px}
+    .stat span,p,.toggle{color:#aaa}
+    .warn{border-color:#955943}
+    .warn pre{height:220px;color:#ffd1bf}
+    .toggle{display:block;margin-top:12px;font-size:13px}
+    @media(max-width:850px){
+      .grid{grid-template-columns:1fr}
+      textarea,pre{height:340px}
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <p class="ey">MARKETING ADS SG328</p>
+    <h1>AUTO REPORT LAPORAN TIKTOK EDUTOTO</h1>
+    <p>Made By Mr.Sambo</p>
+
+    <section class="grid">
+      <div class="card">
+        <b>RAW Campaign Data</b>
+        <p>
+          <textarea id="raw" placeholder="Paste export TikTok Ads / tabel Markdown di sini..."></textarea>
+        </p>
+
+        <button class="p" onclick="go()">⚡ Buat Note</button>
+        <button onclick="clearAll()">Hapus</button>
+
+        <p id="err"></p>
+      </div>
+
+      <div class="card">
+        <div class="stats">
+          <div class="stat">
+            <b id="active">0</b>
+            <span>Campaign Active</span>
+          </div>
+
+          <div class="stat">
+            <b id="off">0</b>
+            <span>Campaign OFF</span>
+          </div>
+
+          <div class="stat">
+            <b id="spend">$0.00</b>
+            <span>Total Spend</span>
+          </div>
+        </div>
+
+        <b>Hasil Note</b>
+
+        <pre id="out">*EDUTOTO*
+
+Paste data RAW lalu tekan “Buat Note”.</pre>
+
+        <label class="toggle">
+          <input id="includeOff" type="checkbox" checked>
+          Tampilkan campaign OFF di hasil note
+        </label>
+
+        <button class="p" onclick="navigator.clipboard.writeText(out.textContent)">▣ Salin Note</button>
+        <button onclick="download()">↓ Download .txt</button>
+      </div>
+    </section>
+
+    <section class="card warn">
+      <b>⚠ PERINGATAN CPR MAHAL</b>
+      <p>Campaign ACTIVE dengan CPR di atas <b>$4.50</b> akan muncul di bawah ini.</p>
+      <pre id="warning">Belum ada data untuk diperiksa.</pre>
+    </section>
+  </main>
+
+  <script>
+    const $ = x => document.getElementById(x);
+
+    const num = x => {
+      let m = String(x || '').replace(/,/g, '').match(/\d+(\.\d+)?/);
+      return m ? +m[0] : 0;
+    };
+
+    const fmt = x => num(x).toFixed(2);
+
+    const cl = x => String(x || '').trim().toLowerCase();
+
+    function parse(s) {
+      let a = s.split(/\r?\n|\t/).map(x => x.trim()).filter(Boolean);
+      let p = [];
+
+      a.forEach((x, i) => {
+        if (/^NO\.?\s*\d+/i.test(x)) p.push(i);
+      });
+
+      if (!p.length) {
+        throw Error('Nama campaign harus dimulai NO.01, NO.02, dan seterusnya.');
+      }
+
+      return p.flatMap((q, i) => {
+        let b = a.slice(q, p[i + 1] || a.length);
+        let z = b.findIndex(x => cl(x) === 'all');
+        let v = b.map(cl);
+
+        let st = v.some(x => x.startsWith('active'))
+          ? 'ACTIVE'
+          : v.some(x => x.startsWith('paused'))
+            ? 'OFF'
+            : '';
+
+        if (z < 0 || !st) return [];
+
+        return [{
+          n: b[0]
+            .replace(/view\s*report\s*edit\s*duplicate|view\s*report|edit|duplicate/gi, '')
+            .replace(/^\s*NO\.?\s*(\d+)/i, (_, n) => 'NO.' + n.padStart(2, '0'))
+            .trim(),
+          st,
+          sp: num(b[z + 1]),
+          cpc: num(b[z + 2]),
+          cpm: num(b[z + 3]),
+          imp: num(b[z + 4]),
+          r: Math.floor(num(b[z + 7])),
+          cpr: num(b[z + 8])
+        }];
+      });
+    }
+
+    function detail(x) {
+      if (x.st === 'ACTIVE' && x.sp === 0 && x.imp > 0) {
+        return `${x.n}
+RESULT :
+SPEND : (ACTIVE)
+CPR :
+CPM :
+CPC :`;
+      }
+
+      if (x.st === 'ACTIVE' && x.sp === 0) {
+        return `${x.n}
+RESULT :
+SPEND : (PENDING)
+CPR :
+CPM :
+CPC :`;
+      }
+
+      return `${x.n}
+RESULT : ${x.r || ''}
+SPEND : ${fmt(x.sp)}${x.st === 'OFF' ? ' (OFF)' : ''}
+CPR : ${fmt(x.cpr)}
+CPM : ${fmt(x.cpm)}
+CPC : ${fmt(x.cpc)}`;
+    }
+
+    function go() {
+      try {
+        let c = parse(raw.value);
+
+        let on = c.filter(x => x.st === 'ACTIVE');
+        let offx = c.filter(x => x.st === 'OFF' && x.sp > 0);
+
+        let bad = c
+          .filter(x => x.st === 'ACTIVE' && x.cpr > 4.5)
+          .sort((a, b) => b.cpr - a.cpr);
+
+        let shown = includeOff.checked ? [...on, ...offx] : on;
+        let total = c.reduce((s, x) => s + x.sp, 0);
+
+        /* CPR mahal sengaja tidak dimasukkan ke Hasil Note */
+        out.textContent = [
+          '*EDUTOTO*',
+          '',
+          shown.map(detail).join('\n\n'),
+          '',
+          '===================',
+          '',
+          `*EDUTOTO*
+TOTAL SPEND : $${fmt(total)}
+REGIST : 
+NDP : 
+HARGA REGIST : $
+HARGA NDP : $
+TOTAL NDP : RP. `
+        ].join('\n');
+
+        warning.textContent = bad.length
+          ? bad.map(x =>
+              '⚠ IKLAN MAHAL — CPR DI ATAS $4.50\n' + detail(x)
+            ).join('\n\n===================\n\n')
+          : '✓ AMAN — Tidak ada campaign ACTIVE dengan CPR di atas $4.50.';
+
+        active.textContent = on.length;
+        off.textContent = offx.length;
+        spend.textContent = '$' + fmt(total);
+        err.textContent = '';
+
+        localStorage.eraw = raw.value;
+      } catch (e) {
+        err.textContent = e.message;
+      }
+    }
+
+    function clearAll() {
+      raw.value = '';
+      localStorage.removeItem('eraw');
+      warning.textContent = 'Belum ada data untuk diperiksa.';
+      out.textContent = '*EDUTOTO*\n\nPaste data RAW lalu tekan “Buat Note”.';
+      active.textContent = '0';
+      off.textContent = '0';
+      spend.textContent = '$0.00';
+      err.textContent = '';
+    }
+
+    function download() {
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([out.textContent]));
+      a.download = 'EDUTOTO-Campaign-Report.txt';
+      a.click();
+    }
+
+    raw.value = localStorage.eraw || '';
+
+    raw.oninput = () => {
+      localStorage.eraw = raw.value;
+    };
+
+    includeOff.onchange = () => {
+      if (raw.value.trim()) go();
+    };
+  </script>
+</body>
+</html>
