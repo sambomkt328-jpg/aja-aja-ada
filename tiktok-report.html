@@ -97,7 +97,7 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
       return m ? +m[0] : 0;
     };
 
-    const fmt = x => num(x).toFixed(2);
+    const fmt = x => num(x).toLocaleString('en-US', {   minimumFractionDigits: 2,   maximumFractionDigits: 2 });
 
     const cl = x => String(x || '').trim().toLowerCase();
 
