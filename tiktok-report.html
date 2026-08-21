@@ -84,7 +84,7 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
 
     <section class="card warn">
       <b>⚠ PERINGATAN CPR MAHAL</b>
-      <p>Campaign ACTIVE dengan CPR di atas <b>$4.50</b> akan muncul di bawah ini.</p>
+      <p>Campaign ACTIVE dengan CPR di atas <b>$3.80</b> akan muncul di bawah ini.</p>
       <pre id="warning">Belum ada data untuk diperiksa.</pre>
     </section>
   </main>
@@ -177,7 +177,7 @@ CPC : ${fmt(x.cpc)}`;
         let offx = c.filter(x => x.st === 'OFF' && x.sp > 0);
 
         let bad = c
-          .filter(x => x.st === 'ACTIVE' && x.cpr > 4.5)
+          .filter(x => x.st === 'ACTIVE' && x.cpr > 3.80)
           .sort((a, b) => b.cpr - a.cpr);
 
         let shown = includeOff.checked ? [...on, ...offx] : on;
@@ -202,9 +202,9 @@ TOTAL NDP : RP. `
 
         warning.textContent = bad.length
           ? bad.map(x =>
-              '⚠ IKLAN MAHAL — CPR DI ATAS $4.50\n' + detail(x)
+              '⚠ IKLAN MAHAL — CPR DI ATAS $3.80\n' + detail(x)
             ).join('\n\n===================\n\n')
-          : '✓ AMAN — Tidak ada campaign ACTIVE dengan CPR di atas $4.50.';
+          : '✓ AMAN — Tidak ada campaign ACTIVE dengan CPR di atas $3.80.';
 
         active.textContent = on.length;
         off.textContent = offx.length;
