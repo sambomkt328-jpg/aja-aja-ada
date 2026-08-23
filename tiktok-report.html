@@ -103,7 +103,21 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
 
     const cl = x => String(x || '').trim().toLowerCase();
 
-    function cleanName(x) {
+    function brandOf(x) {
+      const name = String(x || '').toUpperCase();
+
+      if (/(^|[\s/])SS(?=[\s/]|$)/.test(name)) {
+        return 'SHOPISLOT';
+      }
+
+      if (/(^|[\s/])ET(?=[\s/]|$)/.test(name)) {
+        return 'EDUTOTO';
+      }
+
+      return 'EDUTOTO';
+    }
+
+    function fixName(x) {
       return String(x || '')
         .replace(/^svg/i, '')
         .replace(/view\s*report\s*edit\s*duplicate|view\s*report|edit|duplicate/gi, '')
@@ -111,52 +125,99 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
         .trim();
     }
 
-    function parseTikTokTable(lines) {
-      return lines.flatMap(line => {
+    function statusOf(x) {
+      x = cl(x);
+
+      if (/svg\s*active|^active\b/.test(x)) return 'ACTIVE';
+      if (/svg\s*paused|^paused\b|campaign\s+paused/.test(x)) return 'OFF';
+      if (/svg\s*pending|^pending\b|ad under review/.test(x)) return 'PENDING';
+
+      return '';
+    }
+
+    function makeCampaign(name, st, block) {
+      const moneyIndex = block.findIndex(x =>
+        /^\s*[\d,.]+\s*USD\s*$/i.test(String(x || ''))
+      );
+
+      if (moneyIndex < 0) {
+        return {
+          n: fixName(name),
+          brand: brandOf(name),
+          st,
+          sp: 0,
+          cpc: 0,
+          cpm: 0,
+          imp: 0,
+          r: 0,
+          cpr: 0
+        };
+      }
+
+      return {
+        n: fixName(name),
+        brand: brandOf(name),
+        st,
+        sp: num(block[moneyIndex]),
+        cpc: num(block[moneyIndex + 1]),
+        cpm: num(block[moneyIndex + 2]),
+        imp: num(block[moneyIndex + 3]),
+        r: Math.floor(num(block[moneyIndex + 6])),
+        cpr: num(block[moneyIndex + 7])
+      };
+    }
+
+    function parse(s) {
+      const a = s.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+
+      const tableData = a.flatMap(line => {
         if (
           !line.includes('|') ||
           /^\s*\|\s*-+/.test(line) ||
           !/NO\.?\s*\d+/i.test(line)
         ) return [];
 
-        const b = line
+        const cells = line
           .replace(/<br\s*\/?>/gi, ' ')
           .split('|')
           .map(x => x.trim())
           .filter(Boolean);
 
-        const row = b.join(' ').toLowerCase();
+        const nameCell = cells.find(x => /NO\.?\s*\d+/i.test(x));
+        const statusCell = cells.find(x => statusOf(x));
 
-        const st = /svg\s*active|\bactive\b/.test(row)
-          ? 'ACTIVE'
-          : /svg\s*paused|campaign\s+paused|\bpaused\b/.test(row)
-            ? 'OFF'
-            : '';
+        if (!nameCell || !statusCell) return [];
 
-        /* Pending / Under review tidak masuk note */
-        if (!st) return [];
-
-        const nameCell = b.find(x => /NO\.?\s*\d+/i.test(x));
-        const moneyIndex = b.findIndex(x =>
-          /^\s*[\d,.]+\s*USD\s*$/i.test(x)
-        );
-
-        if (!nameCell || moneyIndex < 0) return [];
-
-        return [{
-          n: cleanName(nameCell),
-          st,
-          sp: num(b[moneyIndex]),
-          cpc: num(b[moneyIndex + 1]),
-          cpm: num(b[moneyIndex + 2]),
-          imp: num(b[moneyIndex + 3]),
-          r: Math.floor(num(b[moneyIndex + 6])),
-          cpr: num(b[moneyIndex + 7])
-        }];
+        return [makeCampaign(nameCell, statusOf(statusCell), cells)];
       });
-    }
 
-    function parseRawLama(a) {
+      if (tableData.length) {
+        return tableData;
+      }
+
+      const starts = [];
+
+      a.forEach((line, i) => {
+        if (
+          /(?:^|\s)NO\.?\s*\d+/i.test(line) &&
+          statusOf(a[i + 1])
+        ) {
+          starts.push(i);
+        }
+      });
+
+      if (starts.length) {
+        return starts.map((start, i) => {
+          const block = a.slice(start, starts[i + 1] || a.length);
+
+          return makeCampaign(
+            block[0],
+            statusOf(block[1]),
+            block
+          );
+        });
+      }
+
       let p = [];
 
       a.forEach((x, i) => {
@@ -176,12 +237,15 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
           ? 'ACTIVE'
           : v.some(x => x.startsWith('paused'))
             ? 'OFF'
-            : '';
+            : v.some(x => x.startsWith('pending'))
+              ? 'PENDING'
+              : '';
 
         if (z < 0 || !st) return [];
 
         return [{
-          n: cleanName(b[0]),
+          n: fixName(b[0]),
+          brand: brandOf(b[0]),
           st,
           sp: num(b[z + 1]),
           cpc: num(b[z + 2]),
@@ -193,21 +257,16 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
       });
     }
 
-    function parse(s) {
-      const lines = s.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-
-      /* Coba format tabel TikTok terlebih dahulu */
-      const tableData = parseTikTokTable(lines);
-
-      if (tableData.length) {
-        return tableData;
+    function detail(x) {
+      if (x.st === 'PENDING') {
+        return `${x.n}
+RESULT :
+SPEND : (PENDING)
+CPR :
+CPM :
+CPC :`;
       }
 
-      /* Jika bukan tabel, pakai format RAW lama seperti sebelumnya */
-      return parseRawLama(lines);
-    }
-
-    function detail(x) {
       if (x.st === 'ACTIVE' && x.sp === 0 && x.imp > 0) {
         return `${x.n}
 RESULT :
@@ -234,35 +293,71 @@ CPM : ${fmt(x.cpm)}
 CPC : ${fmt(x.cpc)}`;
     }
 
-    function go() {
-      try {
-        let c = parse(raw.value);
+    function notePerBrand(brand, campaigns) {
+      const pending = campaigns.filter(x => x.st === 'PENDING');
+      const activeCampaign = campaigns.filter(x => x.st === 'ACTIVE');
 
-        let on = c.filter(x => x.st === 'ACTIVE');
-        let offx = c.filter(x => x.st === 'OFF' && x.sp > 0);
+      /* OFF dengan spend 0.00 tidak masuk note */
+      const offCampaign = campaigns.filter(x =>
+        x.st === 'OFF' && x.sp > 0
+      );
 
-        let bad = c
-          .filter(x => x.st === 'ACTIVE' && x.cpr > 3.80)
-          .sort((a, b) => b.cpr - a.cpr);
+      const shown = includeOff.checked
+        ? [...pending, ...activeCampaign, ...offCampaign]
+        : [...pending, ...activeCampaign];
 
-        let shown = includeOff.checked ? [...on, ...offx] : on;
-        let total = c.reduce((s, x) => s + x.sp, 0);
+      const totalBrand = campaigns.reduce((sum, x) => sum + x.sp, 0);
 
-        out.textContent = [
-          '*EDUTOTO*',
-          '',
-          shown.map(detail).join('\n\n'),
-          '',
-          '===================',
-          '',
-          `*EDUTOTO*
-TOTAL SPEND : $${fmt(total)}
+      return [
+        `*${brand}*`,
+        '',
+        shown.map(detail).join('\n\n'),
+        '',
+        '===================',
+        '',
+        `*${brand}*
+TOTAL SPEND : $${fmt(totalBrand)}
 REGIST : 
 NDP : 
 HARGA REGIST : $
 HARGA NDP : $
 TOTAL NDP : RP. `
-        ].join('\n');
+      ].join('\n');
+    }
+
+    function go() {
+      try {
+        const c = parse(raw.value);
+
+        /*
+          Jika ada kode SS, hanya SHOPISLOT yang tampil.
+          Jika tidak ada SS, hanya EDUTOTO yang tampil.
+        */
+        const reportBrand = c.some(x => x.brand === 'SHOPISLOT')
+          ? 'SHOPISLOT'
+          : 'EDUTOTO';
+
+        const reportCampaigns = c.filter(x =>
+          x.brand === reportBrand
+        );
+
+        const on = reportCampaigns.filter(x => x.st === 'ACTIVE');
+
+        /* OFF dengan spend 0.00 tidak masuk note */
+        const offx = reportCampaigns.filter(x =>
+          x.st === 'OFF' && x.sp > 0
+        );
+
+        const bad = reportCampaigns
+          .filter(x => x.st === 'ACTIVE' && x.cpr > 3.80)
+          .sort((a, b) => b.cpr - a.cpr);
+
+        const total = reportCampaigns.reduce((s, x) => s + x.sp, 0);
+
+        out.textContent = notePerBrand(
+          reportBrand,
+          reportCampaigns
+        );
 
         warning.textContent = bad.length
           ? bad.map(x =>
@@ -295,7 +390,7 @@ TOTAL NDP : RP. `
     function download() {
       let a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([out.textContent]));
-      a.download = 'EDUTOTO-Campaign-Report.txt';
+      a.download = 'Campaign-Report.txt';
       a.click();
     }
 
