@@ -85,7 +85,6 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
       <b>⚠ PERINGATAN CPR MAHAL</b>
       <p>Campaign ACTIVE dengan CPR di atas <b>$3.80</b> akan muncul di bawah ini.</p>
       <pre id="warning">Belum ada data untuk diperiksa.</pre>
->
     </section>
   </main>
 
@@ -104,60 +103,60 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
 
     const cl = x => String(x || '').trim().toLowerCase();
 
-    function parse(s) {
-      const lines = s.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+    function cleanName(x) {
+      return String(x || '')
+        .replace(/^svg/i, '')
+        .replace(/view\s*report\s*edit\s*duplicate|view\s*report|edit|duplicate/gi, '')
+        .replace(/^\s*NO\.?\s*(\d+)/i, (_, n) => 'NO.' + n.padStart(2, '0'))
+        .trim();
+    }
 
-      /* FORMAT TABEL MARKDOWN HASIL COPY TIKTOK */
-      if (lines.some(line => line.startsWith('|'))) {
-        return lines.flatMap(line => {
-          if (
-            !line.startsWith('|') ||
-            /^\|\s*-+/.test(line) ||
-            !/NO\.?\s*\d+/i.test(line)
-          ) return [];
+    function parseTikTokTable(lines) {
+      return lines.flatMap(line => {
+        if (
+          !line.includes('|') ||
+          /^\s*\|\s*-+/.test(line) ||
+          !/NO\.?\s*\d+/i.test(line)
+        ) return [];
 
-          const b = line
-            .split('|')
-            .map(x => x.trim())
-            .filter(Boolean);
+        const b = line
+          .replace(/<br\s*\/?>/gi, ' ')
+          .split('|')
+          .map(x => x.trim())
+          .filter(Boolean);
 
-          const v = b.map(cl);
+        const row = b.join(' ').toLowerCase();
 
-          const st = v.some(x => /svgactive|^active/.test(x))
-            ? 'ACTIVE'
-            : v.some(x => /svgpaused|^paused/.test(x))
-              ? 'OFF'
-              : '';
+        const st = /svg\s*active|\bactive\b/.test(row)
+          ? 'ACTIVE'
+          : /svg\s*paused|campaign\s+paused|\bpaused\b/.test(row)
+            ? 'OFF'
+            : '';
 
-          /* Pending / Under review tidak dimasukkan ke note */
-          if (!st) return [];
+        /* Pending / Under review tidak masuk note */
+        if (!st) return [];
 
-          const nameCell = b.find(x => /NO\.?\s*\d+/i.test(x));
-          const moneyIndex = b.findIndex(x =>
-            /^\$?[\d,.]+\s*USD$/i.test(x.replace(/\s+/g, ' '))
-          );
+        const nameCell = b.find(x => /NO\.?\s*\d+/i.test(x));
+        const moneyIndex = b.findIndex(x =>
+          /^\s*[\d,.]+\s*USD\s*$/i.test(x)
+        );
 
-          if (!nameCell || moneyIndex < 0) return [];
+        if (!nameCell || moneyIndex < 0) return [];
 
-          return [{
-            n: nameCell
-              .replace(/^svg/i, '')
-              .replace(/view\s*report\s*edit\s*duplicate|view\s*report|edit|duplicate/gi, '')
-              .replace(/^\s*NO\.?\s*(\d+)/i, (_, n) => 'NO.' + n.padStart(2, '0'))
-              .trim(),
-            st,
-            sp: num(b[moneyIndex]),
-            cpc: num(b[moneyIndex + 1]),
-            cpm: num(b[moneyIndex + 2]),
-            imp: num(b[moneyIndex + 3]),
-            r: Math.floor(num(b[moneyIndex + 6])),
-            cpr: num(b[moneyIndex + 7])
-          }];
-        });
-      }
+        return [{
+          n: cleanName(nameCell),
+          st,
+          sp: num(b[moneyIndex]),
+          cpc: num(b[moneyIndex + 1]),
+          cpm: num(b[moneyIndex + 2]),
+          imp: num(b[moneyIndex + 3]),
+          r: Math.floor(num(b[moneyIndex + 6])),
+          cpr: num(b[moneyIndex + 7])
+        }];
+      });
+    }
 
-      /* FORMAT RAW LAMA — TETAP SAMA */
-      let a = lines;
+    function parseRawLama(a) {
       let p = [];
 
       a.forEach((x, i) => {
@@ -182,10 +181,7 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
         if (z < 0 || !st) return [];
 
         return [{
-          n: b[0]
-            .replace(/view\s*report\s*edit\s*duplicate|view\s*report|edit|duplicate/gi, '')
-            .replace(/^\s*NO\.?\s*(\d+)/i, (_, n) => 'NO.' + n.padStart(2, '0'))
-            .trim(),
+          n: cleanName(b[0]),
           st,
           sp: num(b[z + 1]),
           cpc: num(b[z + 2]),
@@ -195,6 +191,20 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
           cpr: num(b[z + 8])
         }];
       });
+    }
+
+    function parse(s) {
+      const lines = s.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+
+      /* Coba format tabel TikTok terlebih dahulu */
+      const tableData = parseTikTokTable(lines);
+
+      if (tableData.length) {
+        return tableData;
+      }
+
+      /* Jika bukan tabel, pakai format RAW lama seperti sebelumnya */
+      return parseRawLama(lines);
     }
 
     function detail(x) {
