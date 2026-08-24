@@ -130,6 +130,7 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
 
       if (/svg\s*active|^active\b/.test(x)) return 'ACTIVE';
       if (/svg\s*paused|^paused\b|campaign\s+paused/.test(x)) return 'OFF';
+      if (/svg\s*not delivering|^not delivering\b/.test(x)) return 'RIJECT';
       if (/svg\s*pending|^pending\b|ad under review/.test(x)) return 'PENDING';
 
       return '';
@@ -237,9 +238,11 @@ Paste data RAW lalu tekan “Buat Note”.</pre>
           ? 'ACTIVE'
           : v.some(x => x.startsWith('paused'))
             ? 'OFF'
-            : v.some(x => x.startsWith('pending'))
-              ? 'PENDING'
-              : '';
+            : v.some(x => x.startsWith('not delivering'))
+              ? 'RIJECT'
+              : v.some(x => x.startsWith('pending'))
+                ? 'PENDING'
+                : '';
 
         if (z < 0 || !st) return [];
 
@@ -287,7 +290,7 @@ CPC :`;
 
       return `${x.n}
 RESULT : ${x.r || ''}
-SPEND : ${fmt(x.sp)}${x.st === 'OFF' ? ' (OFF)' : ''}
+SPEND : ${fmt(x.sp)}${x.st === 'OFF' ? ' (OFF)' : x.st === 'RIJECT' ? ' (RIJECT)' : ''}
 CPR : ${fmt(x.cpr)}
 CPM : ${fmt(x.cpm)}
 CPC : ${fmt(x.cpc)}`;
@@ -296,6 +299,7 @@ CPC : ${fmt(x.cpc)}`;
     function notePerBrand(brand, campaigns) {
       const pending = campaigns.filter(x => x.st === 'PENDING');
       const activeCampaign = campaigns.filter(x => x.st === 'ACTIVE');
+      const rj = campaigns.filter(x => x.st === 'RIJECT');
 
       /* OFF dengan spend 0.00 tidak masuk note */
       const offCampaign = campaigns.filter(x =>
@@ -303,8 +307,8 @@ CPC : ${fmt(x.cpc)}`;
       );
 
       const shown = includeOff.checked
-        ? [...pending, ...activeCampaign, ...offCampaign]
-        : [...pending, ...activeCampaign];
+        ? [...pending, ...activeCampaign, ...rj, ...offCampaign]
+        : [...pending, ...activeCampaign, ...rj];
 
       const totalBrand = campaigns.reduce((sum, x) => sum + x.sp, 0);
 
