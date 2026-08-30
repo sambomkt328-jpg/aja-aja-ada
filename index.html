@@ -3,359 +3,153 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>EDUTOTO Dashboard</title>
+  <title>Marketing Ads SG328</title>
 
   <style>
+    :root{
+      --bg:#0d0d0e;
+      --card:#18181c;
+      --line:#3d3c40;
+      --gold:#f0c85f;
+      --gold-light:#fff0b6;
+      --text:#fff;
+      --muted:#aaa;
+    }
+
     *{box-sizing:border-box}
 
     body{
+      min-height:100vh;
       margin:0;
-      background:#0d0d0e;
-      color:#fff;
-      font:14px Arial,sans-serif;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at top right,#33270d 0%,transparent 32%),
+        radial-gradient(circle at bottom left,#181818 0%,transparent 36%),
+        var(--bg);
+      color:var(--text);
+      font-family:Arial,sans-serif;
     }
 
     main{
-      max-width:1500px;
-      margin:auto;
+      width:min(100%,1100px);
       padding:28px 20px;
     }
 
-    .g,b{color:#f0c85f}
+    .eyebrow{
+      color:var(--gold);
+      font-size:12px;
+      font-weight:bold;
+      letter-spacing:.12em;
+    }
 
     h1{
-      color:#fff0b6;
-      margin:4px 0;
-      font-size:28px;
+      margin:8px 0 8px;
+      color:var(--gold-light);
+      font-size:clamp(28px,5vw,46px);
+    }
+
+    .sub{
+      margin:0 0 30px;
+      color:var(--muted);
     }
 
     .grid{
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
     }
 
-    .card{
-      background:#18181c;
-      border:1px solid #3d3c40;
-      border-radius:14px;
-      padding:17px;
-      margin-bottom:18px;
+    a{
+      text-decoration:none;
+      color:inherit;
     }
 
-    textarea{
-      width:100%;
-      height:320px;
-      background:#101012;
-      color:#fff;
-      border:1px solid #444;
-      border-radius:9px;
-      padding:12px;
-      font:12px/1.5 Consolas,monospace;
-      outline:none;
-      resize:vertical;
-      transition:.2s ease;
-    }
-
-    textarea:focus{
-      border-color:#f0c85f;
-      box-shadow:0 0 0 3px rgba(240,200,95,.12);
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:9px;
-      margin:0 0 18px;
-    }
-
-    button{
+    .menu{
       position:relative;
+      min-height:245px;
       overflow:hidden;
-      padding:11px 16px;
-      border:1px solid #4b4a50;
-      border-radius:9px;
-      background:#28272c;
-      color:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding:21px;
+      background:linear-gradient(145deg,#202025,#151518);
+      border:1px solid var(--line);
+      border-radius:16px;
+      transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+    }
+
+    .menu:hover{
+      transform:translateY(-7px);
+      border-color:var(--gold);
+      box-shadow:0 18px 35px rgba(0,0,0,.42);
+    }
+
+    .number{
+      color:#705718;
+      font-size:48px;
       font-weight:bold;
-      cursor:pointer;
-      transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+      line-height:1;
     }
 
-    button:hover{
-      transform:translateY(-2px);
-      background:#38363d;
-      box-shadow:0 7px 18px rgba(0,0,0,.3);
+    .menu h2{
+      margin:18px 0 9px;
+      color:var(--gold-light);
+      font-size:20px;
     }
 
-    button:active{
-      transform:translateY(1px) scale(.97);
-      box-shadow:0 2px 7px rgba(0,0,0,.3);
+    .menu p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
     }
 
-    button::after{
-      content:"";
-      position:absolute;
-      top:50%;
-      left:50%;
-      width:0;
-      height:0;
-      background:rgba(255,255,255,.25);
-      border-radius:50%;
-      transform:translate(-50%,-50%);
-      transition:width .45s ease,height .45s ease;
+    .open{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:22px;
+      color:var(--gold);
+      font-size:12px;
+      font-weight:bold;
     }
 
-    button:active::after{
-      width:250px;
-      height:250px;
-    }
-
-    .p{
-      border:0;
-      background:linear-gradient(135deg,#ffe39a,#f0c85f);
-      color:#1c1402;
-      box-shadow:0 4px 14px rgba(240,200,95,.2);
-    }
-
-    .p:hover{
-      background:linear-gradient(135deg,#fff0b9,#f2bc3b);
-      box-shadow:0 8px 23px rgba(240,200,95,.34);
-    }
-
-    .stats{
+    .arrow{
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-      margin-bottom:18px;
+      place-items:center;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:var(--gold);
+      color:#1c1402;
+      font-size:18px;
+      transition:transform .2s ease;
     }
 
-    .s{
-      min-width:0;
-      border:1px solid #444;
-      border-radius:9px;
-      padding:12px;
-      background:#141418;
+    .menu:hover .arrow{
+      transform:translateX(5px);
     }
 
-    .s span{
-      display:block;
-      color:#aaa;
-      font-size:11px;
-      line-height:1.35;
+    footer{
+      margin-top:25px;
+      color:#777;
+      text-align:center;
+      font-size:12px;
     }
 
-    .s b{
-      display:block;
-      font-size:21px;
-      margin-top:4px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .spend-hour{
-      border-color:#287651;
-      background:linear-gradient(135deg,#10241b,#153524);
-      box-shadow:inset 0 0 18px rgba(65,190,120,.06);
-    }
-
-    .spend-hour span{
-      color:#94d7ae;
-    }
-
-    .spend-hour b{
-      color:#5ed9a1;
-    }
-
-    .wrap{
-      width:100%;
-      overflow:auto;
-      max-height:600px;
-      margin-top:14px;
-      border:1px solid #303036;
-      border-radius:9px;
-      -webkit-overflow-scrolling:touch;
-    }
-
-    table{
-      border-collapse:collapse;
-      width:100%;
-      min-width:920px;
-    }
-
-    th,td{
-      padding:10px;
-      border-bottom:1px solid #333;
-      text-align:left;
-      white-space:nowrap;
-    }
-
-    th{
-      background:#252329;
-      color:#fff0b6;
-      position:sticky;
-      top:0;
-      z-index:1;
-      font-size:11px;
-    }
-
-    tr:hover td{
-      background:#202026;
-    }
-
-    .active{
-      color:#5ed9a1;
-      font-weight:bold;
-    }
-
-    .review{
-      color:#5ed9ff;
-      font-weight:bold;
-    }
-
-    .scheduled{
-      color:#ffd86d;
-      font-weight:bold;
-    }
-
-    .bad,
-    .cpr-expensive{
-      color:#ff7562;
-      font-weight:bold;
-    }
-
-    .cpr-safe{
-      color:#5ed9a1;
-      font-weight:bold;
-    }
-
-    .cpr-zero{
-      color:#aaa;
-      font-weight:bold;
-    }
-
-    .warning-card{
-      border-color:#9f493b;
-    }
-
-    .warning-item{
-      border:1px solid #7d3b31;
-      background:#241613;
-      border-radius:9px;
-      padding:13px;
-      margin-top:10px;
-      color:#ffd2c8;
-      line-height:1.6;
-      overflow-wrap:anywhere;
-    }
-
-    .warning-item b{
-      color:#ff9976;
-    }
-
-    @media(max-width:800px){
-      body{
-        font-size:13px;
-      }
+    @media(max-width:760px){
+      body{display:block}
 
       main{
-        padding:18px 12px 32px;
-      }
-
-      .g{
-        font-size:11px;
-      }
-
-      h1{
-        font-size:21px;
-        line-height:1.25;
-        margin:5px 0 8px;
+        padding:35px 14px;
       }
 
       .grid{
         grid-template-columns:1fr;
-        gap:12px;
       }
 
-      .card{
-        border-radius:12px;
-        padding:13px;
-        margin-bottom:13px;
-      }
-
-      textarea{
-        height:245px;
-        padding:11px;
-        font-size:11px;
-      }
-
-      .actions{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:8px;
-        margin-bottom:14px;
-      }
-
-      button{
-        width:100%;
-        min-height:45px;
-        padding:10px 8px;
-        font-size:12px;
-      }
-
-      .stats{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:8px;
-        margin-bottom:13px;
-      }
-
-      .s{
-        min-height:71px;
-        padding:10px;
-        border-radius:10px;
-      }
-
-      .s span{
-        min-height:29px;
-        font-size:10px;
-      }
-
-      .s b{
-        margin-top:3px;
-        font-size:19px;
-      }
-
-      .wrap{
-        max-height:480px;
-        margin-top:12px;
-      }
-
-      table{
-        min-width:790px;
-      }
-
-      th,td{
-        padding:9px 8px;
-        font-size:11px;
-      }
-
-      th{
-        font-size:10px;
-      }
-
-      .warning-item{
-        padding:11px;
-        font-size:12px;
-      }
-    }
-
-    @media(max-width:360px){
-      .stats{
-        grid-template-columns:1fr;
-      }
-
-      .actions{
-        grid-template-columns:1fr;
+      .menu{
+        min-height:190px;
       }
     }
   </style>
@@ -363,361 +157,58 @@
 
 <body>
   <main>
-    <div class="g">MARKETING ADS SG328</div>
-    <h1>TOTAL SPENDING ADS PER JAM</h1>
-    <p><b>Made By Mr.Sambo</b></p>
+    <div class="eyebrow">MARKETING ADS SG328</div>
+    <h1>Pilih Dashboard</h1>
+    <p class="sub">Pilih tools yang ingin kamu gunakan.</p>
 
     <section class="grid">
-      <div class="card">
-        <b>DATA JAM SEBELUMNYA</b>
-        <p>
-          <textarea id="prev" placeholder="Paste data jam sebelumnya di sini..."></textarea>
-        </p>
-      </div>
+      <a href="./index.html">
+        <article class="menu">
+          <div>
+            <div class="number">01</div>
+            <h2>Total Spending Per Jam</h2>
+            <p>Bandingkan spend jam sebelumnya dengan jam sekarang secara otomatis.</p>
+          </div>
 
-      <div class="card">
-        <b>DATA JAM SEKARANG</b>
-        <p>
-          <textarea id="now" placeholder="Paste data jam sekarang di sini..."></textarea>
-        </p>
-      </div>
+          <div class="open">
+            BUKA DASHBOARD
+            <div class="arrow">→</div>
+          </div>
+        </article>
+      </a>
+
+      <a href="./filter-ads-meta.html">
+        <article class="menu">
+          <div>
+            <div class="number">02</div>
+            <h2>Filter Ads Meta</h2>
+            <p>Filter campaign berdasarkan CPR, spend, budget, dan status iklan.</p>
+          </div>
+
+          <div class="open">
+            BUKA FILTER ADS
+            <div class="arrow">→</div>
+          </div>
+        </article>
+      </a>
+
+      <a href="./tiktok-report.html">
+        <article class="menu">
+          <div>
+            <div class="number">03</div>
+            <h2>TikTok Report</h2>
+            <p>Buat laporan campaign TikTok secara cepat dari data RAW.</p>
+          </div>
+
+          <div class="open">
+            BUKA TIKTOK REPORT
+            <div class="arrow">→</div>
+          </div>
+        </article>
+      </a>
     </section>
 
-    <div class="actions">
-      <button class="p" onclick="go()">⚡ Hitung Laporan</button>
-      <button onclick="clearAll()">✕ Hapus Semua</button>
-    </div>
-
-    <section class="stats">
-      <div class="s">
-        <span>TOTAL ACCOUNT</span>
-        <b id="account">0</b>
-      </div>
-
-      <div class="s">
-        <span>TOTAL CAMPAIGN</span>
-        <b id="all">0</b>
-      </div>
-
-      <div class="s">
-        <span>CAMPAIGN ACTIVE</span>
-        <b id="act">0</b>
-      </div>
-
-      <div class="s" id="card-off" style="display:none">
-        <span>CAMPAIGN OFF</span>
-        <b id="off">0</b>
-      </div>
-
-      <div class="s" id="card-dis" style="display:none">
-        <span>CAMPAIGN DISABLED</span>
-        <b id="dis">0</b>
-      </div>
-
-      <div class="s" id="card-rev" style="display:none">
-        <span>CAMPAIGN IN REVIEW</span>
-        <b id="rev">0</b>
-      </div>
-
-      <div class="s" id="card-sch" style="display:none">
-        <span>CAMPAIGN SCHEDULED</span>
-        <b id="sch">0</b>
-      </div>
-
-      <div class="s">
-        <span>TOTAL SPEND SEBELUM</span>
-        <b id="ps">$0.00</b>
-      </div>
-
-      <div class="s">
-        <span>TOTAL SPEND SEKARANG</span>
-        <b id="ns">$0.00</b>
-      </div>
-
-      <div class="s spend-hour">
-        <span>SPEND / JAM</span>
-        <b id="sh">$0.00</b>
-      </div>
-    </section>
-
-    <section class="card">
-      <b>HASIL TOTAL SPENDING PER JAM META ADS</b>
-      <div class="wrap" id="out"></div>
-    </section>
-
-    <section class="card warning-card">
-      <b>⚠ PERINGATAN IKLAN MAHAL — CPR DI ATAS $5</b>
-      <div id="warning">Belum ada data untuk diperiksa.</div>
-    </section>
+    <footer>Made By Mr.Sambo</footer>
   </main>
-
-  <script>
-    const $ = id => document.getElementById(id);
-
-    const prev = $('prev');
-    const now = $('now');
-    const out = $('out');
-    const warning = $('warning');
-
-    const account = $('account');
-    const all = $('all');
-    const act = $('act');
-    const off = $('off');
-    const dis = $('dis');
-    const rev = $('rev');
-    const sch = $('sch');
-    const ps = $('ps');
-    const ns = $('ns');
-    const sh = $('sh');
-
-    const cardOff = $('card-off');
-    const cardDis = $('card-dis');
-    const cardRev = $('card-rev');
-    const cardSch = $('card-sch');
-
-    const num = value => {
-      const match = String(value || '')
-        .replace(/,/g, '')
-        .match(/\d+(\.\d+)?/);
-
-      return match ? Number(match[0]) : 0;
-    };
-
-    const mon = value => '$' + num(value).toLocaleString('en-US', {
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    });
-
-    const escapeHtml = value => String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-
-    function showWhenNotZero(card, value) {
-      card.style.display = value > 0 ? '' : 'none';
-    }
-
-    function statusClass(status) {
-      if (status === 'ACTIVE') return 'active';
-      if (status === 'IN REVIEW') return 'review';
-      if (status === 'SCHEDULED') return 'scheduled';
-      return 'bad';
-    }
-
-    /* CPR > $5 merah | CPR $0.01 sampai $5 hijau | CPR $0 abu-abu */
-    function cprClass(cpr) {
-      if (cpr > 5) return 'cpr-expensive';
-      if (cpr > 0) return 'cpr-safe';
-      return 'cpr-zero';
-    }
-
-    function statusRank(status) {
-      const order = {
-        'ACTIVE': 1,
-        'IN REVIEW': 2,
-        'SCHEDULED': 3,
-        'OFF': 4,
-        'DISABLED': 5
-      };
-
-      return order[status] || 99;
-    }
-
-    function read(rawText) {
-      const campaigns = [];
-      let campaign = null;
-
-      for (const line of rawText.split(/\n/)) {
-        const codeMatch = line.match(/\((\d{3,6})\)/);
-
-        if (codeMatch) {
-          if (campaign) campaigns.push(campaign);
-
-          campaign = {
-            code: codeMatch[1],
-            name: line.trim(),
-            result: 0,
-            spend: 0,
-            cpr: 0,
-            cpm: 0,
-            status: 'ACTIVE'
-          };
-
-          continue;
-        }
-
-        if (!campaign) continue;
-
-        if (/DISABLED/i.test(line)) {
-          campaign.status = 'DISABLED';
-
-        } else if (/IN\s*REVIEW|UNDER\s*REVIEW/i.test(line)) {
-          campaign.status = 'IN REVIEW';
-
-        } else if (/SCHEDULED/i.test(line)) {
-          campaign.status = 'SCHEDULED';
-
-        } else if (/\bOFF\b/i.test(line)) {
-          campaign.status = 'OFF';
-        }
-
-        if (/^RESULT\s*:/i.test(line)) {
-          campaign.result = num(line);
-
-        } else if (/^SPEND\s*:/i.test(line)) {
-          campaign.spend = num(line);
-
-        } else if (/^CPR\s*:/i.test(line)) {
-          campaign.cpr = num(line);
-
-        } else if (/^CPM\s*:/i.test(line)) {
-          campaign.cpm = num(line);
-        }
-      }
-
-      if (campaign) campaigns.push(campaign);
-
-      return campaigns;
-    }
-
-    function go() {
-      const previousData = read(prev.value);
-      const currentData = read(now.value);
-
-      if (!previousData.length || !currentData.length) {
-        alert('Isi data jam sebelumnya dan jam saat ini terlebih dahulu.');
-        return;
-      }
-
-      const previousMap = new Map(
-        previousData.map(item => [item.code, item])
-      );
-
-      const rows = currentData
-        .map(item => {
-          const previous = previousMap.get(item.code) || {spend:0};
-
-          return {
-            ...item,
-            previousSpend: previous.spend,
-            spendHour: item.spend - previous.spend
-          };
-        })
-        .sort((a, b) => {
-          const statusDifference =
-            statusRank(a.status) - statusRank(b.status);
-
-          if (statusDifference !== 0) return statusDifference;
-
-          return b.spend - a.spend;
-        });
-
-      const sum = (items, key) =>
-        items.reduce((total, item) => total + (item[key] || 0), 0);
-
-      const totalPreviousSpend = sum(previousData, 'spend');
-      const totalCurrentSpend = sum(currentData, 'spend');
-
-      const uniqueAccounts = new Set(rows.map(item => item.code));
-
-      const activeCount = rows.filter(x => x.status === 'ACTIVE').length;
-      const offCount = rows.filter(x => x.status === 'OFF').length;
-      const disabledCount = rows.filter(x => x.status === 'DISABLED').length;
-      const reviewCount = rows.filter(x => x.status === 'IN REVIEW').length;
-      const scheduledCount = rows.filter(x => x.status === 'SCHEDULED').length;
-
-      account.textContent = uniqueAccounts.size;
-      all.textContent = rows.length;
-
-      act.textContent = activeCount;
-      off.textContent = offCount;
-      dis.textContent = disabledCount;
-      rev.textContent = reviewCount;
-      sch.textContent = scheduledCount;
-
-      showWhenNotZero(cardOff, offCount);
-      showWhenNotZero(cardDis, disabledCount);
-      showWhenNotZero(cardRev, reviewCount);
-      showWhenNotZero(cardSch, scheduledCount);
-
-      ps.textContent = mon(totalPreviousSpend);
-      ns.textContent = mon(totalCurrentSpend);
-      sh.textContent = mon(totalCurrentSpend - totalPreviousSpend);
-
-      const expensiveAds = rows
-        .filter(item => item.status === 'ACTIVE' && item.cpr > 5)
-        .sort((a, b) => b.cpr - a.cpr);
-
-      warning.innerHTML = expensiveAds.length
-        ? expensiveAds.map(item => `
-            <div class="warning-item">
-              <b>⚠ IKLAN MAHAL — CPR ${mon(item.cpr)}</b><br><br>
-              <b>NO AKUN:</b> ${item.code}<br>
-              <b>NAMA CAMPAIGN:</b> ${escapeHtml(item.name)}<br>
-              <b>SPEND:</b> ${mon(item.spend)}<br>
-              <b>CPR:</b> ${mon(item.cpr)}<br>
-              <b>CPM:</b> ${mon(item.cpm)}
-            </div>
-          `).join('')
-        : '<p class="active">✓ Aman — tidak ada iklan ACTIVE dengan CPR di atas $5.</p>';
-
-      out.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>NO AKUN</th>
-              <th>NAMA CAMPAIGN</th>
-              <th>STATUS</th>
-              <th>SPEND SEBELUM</th>
-              <th>SPEND SEKARANG</th>
-              <th>SPEND / JAM</th>
-              <th>CPR SEKARANG</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            ${rows.map(item => `
-              <tr>
-                <td>${item.code}</td>
-                <td>${escapeHtml(item.name)}</td>
-                <td class="${statusClass(item.status)}">${item.status}</td>
-                <td>${mon(item.previousSpend)}</td>
-                <td>${mon(item.spend)}</td>
-                <td>${mon(item.spendHour)}</td>
-                <td class="${cprClass(item.cpr)}">${mon(item.cpr)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      `;
-    }
-
-    function clearAll() {
-      prev.value = '';
-      now.value = '';
-
-      out.innerHTML = '';
-      warning.innerHTML = 'Belum ada data untuk diperiksa.';
-
-      account.textContent = '0';
-      all.textContent = '0';
-      act.textContent = '0';
-      off.textContent = '0';
-      dis.textContent = '0';
-      rev.textContent = '0';
-      sch.textContent = '0';
-
-      cardOff.style.display = 'none';
-      cardDis.style.display = 'none';
-      cardRev.style.display = 'none';
-      cardSch.style.display = 'none';
-
-      ps.textContent = '$0.00';
-      ns.textContent = '$0.00';
-      sh.textContent = '$0.00';
-    }
-  </script>
 </body>
 </html>
