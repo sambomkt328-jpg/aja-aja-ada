@@ -2,43 +2,722 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marketing Ads SG328</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EDUTOTO Dashboard</title>
+
   <style>
-    :root{--bg:#0d0d0e;--card:#18181c;--line:#3d3c40;--gold:#f0c85f;--muted:#aaa;--red:#ff9976;--green:#5ed9a1;--blue:#79adff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font:14px Arial,sans-serif}header{position:sticky;top:0;z-index:9;background:#121216;border-bottom:1px solid var(--line);padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.brand{font-weight:bold;color:var(--gold)}nav{display:flex;gap:8px;flex-wrap:wrap}nav button{margin:0;background:#26262c;color:#fff;border:1px solid #41414a;padding:9px 12px;border-radius:8px;font-weight:bold;cursor:pointer}nav button.on{background:var(--gold);color:#1c1402;border-color:var(--gold)}main{max-width:1500px;margin:auto;padding:28px 20px}.page{display:none}.page.on{display:block}.g,b{color:var(--gold)}h1{color:#fff0b6;margin:4px 0}.hint{color:#b7b7bd;line-height:1.5}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:18px}textarea{width:100%;height:320px;box-sizing:border-box;background:#101012;color:#fff;border:1px solid #444;border-radius:9px;padding:12px;font:12px Consolas,monospace}button{padding:11px 15px;margin:13px 7px 13px 0;border:0;border-radius:8px;font-weight:bold;cursor:pointer}.p{background:var(--gold);color:#1c1402}.alt{background:#34343b;color:#fff}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}.s{border:1px solid #444;border-radius:9px;padding:12px;background:#141418}.s span{color:var(--muted);font-size:11px}.s b{display:block;font-size:21px}.wrap{overflow:auto;max-height:600px}table{border-collapse:collapse;width:100%;min-width:920px}th,td{padding:10px;border-bottom:1px solid #333;text-align:left;white-space:nowrap}th{background:#252329;color:#fff0b6;position:sticky;top:0;font-size:11px}.active{color:var(--green);font-weight:bold}.bad{color:var(--red);font-weight:bold}.warning-card{border-color:#9f493b}.warning-item{border:1px solid #7d3b31;background:#241613;border-radius:9px;padding:13px;margin-top:10px;color:#ffd2c8}.warning-item b{color:var(--red)}.bar{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:12px}.field{display:grid;gap:6px;color:#c6c6cd;font-size:12px}.field input,.field select{width:145px;background:#101012;color:#fff;border:1px solid #444;border-radius:8px;padding:9px}.summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:10px;margin-bottom:18px}.sum{border:1px solid #444;border-radius:10px;padding:12px;background:#141418}.sum b{display:block;font-size:22px;margin-top:6px}.sum small{color:var(--muted)}.table-wrap{overflow:auto;border:1px solid #34343b;border-radius:12px}.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:bold;white-space:nowrap}.mahal{background:#441c24;color:#ffabb2}.hold-history{background:#4a3916;color:#ffd982}.hold{background:#40371d;color:#ffe18e}.go{background:#133d2d;color:#9cf0c5}.watch{background:#1d3150;color:#aaccff}.pending{background:#303644;color:#d3d8e1}.danger{background:#261319}.danger td{border-color:#542a32}.meta{font-size:11px;color:#aaa;margin-top:5px;line-height:1.4}.note{font-size:11px;color:#aaa;max-width:260px;white-space:normal}.notice{padding:12px;border-radius:9px;background:#23242a;color:#d9d9df;margin:10px 0}.resultbox{white-space:pre-wrap;min-height:240px;background:#101012;border:1px solid #444;border-radius:9px;padding:12px;font:12px Consolas,monospace;line-height:1.5}@media(max-width:800px){main{padding:20px 12px}.grid{grid-template-columns:1fr}.stats,.summary{grid-template-columns:repeat(2,1fr)}.bar>*{flex:1}.field input,.field select{width:100%}}
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      background:#0d0d0e;
+      color:#fff;
+      font:14px Arial,sans-serif;
+    }
+
+    main{
+      max-width:1500px;
+      margin:auto;
+      padding:28px 20px;
+    }
+
+    .g,b{color:#f0c85f}
+
+    h1{
+      color:#fff0b6;
+      margin:4px 0;
+      font-size:28px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .card{
+      background:#18181c;
+      border:1px solid #3d3c40;
+      border-radius:14px;
+      padding:17px;
+      margin-bottom:18px;
+    }
+
+    textarea{
+      width:100%;
+      height:320px;
+      background:#101012;
+      color:#fff;
+      border:1px solid #444;
+      border-radius:9px;
+      padding:12px;
+      font:12px/1.5 Consolas,monospace;
+      outline:none;
+      resize:vertical;
+      transition:.2s ease;
+    }
+
+    textarea:focus{
+      border-color:#f0c85f;
+      box-shadow:0 0 0 3px rgba(240,200,95,.12);
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      margin:0 0 18px;
+    }
+
+    button{
+      position:relative;
+      overflow:hidden;
+      padding:11px 16px;
+      border:1px solid #4b4a50;
+      border-radius:9px;
+      background:#28272c;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+    }
+
+    button:hover{
+      transform:translateY(-2px);
+      background:#38363d;
+      box-shadow:0 7px 18px rgba(0,0,0,.3);
+    }
+
+    button:active{
+      transform:translateY(1px) scale(.97);
+      box-shadow:0 2px 7px rgba(0,0,0,.3);
+    }
+
+    button::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:0;
+      height:0;
+      background:rgba(255,255,255,.25);
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      transition:width .45s ease,height .45s ease;
+    }
+
+    button:active::after{
+      width:250px;
+      height:250px;
+    }
+
+    .p{
+      border:0;
+      background:linear-gradient(135deg,#ffe39a,#f0c85f);
+      color:#1c1402;
+      box-shadow:0 4px 14px rgba(240,200,95,.2);
+    }
+
+    .p:hover{
+      background:linear-gradient(135deg,#fff0b9,#f2bc3b);
+      box-shadow:0 8px 23px rgba(240,200,95,.34);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .s{
+      min-width:0;
+      border:1px solid #444;
+      border-radius:9px;
+      padding:12px;
+      background:#141418;
+    }
+
+    .s span{
+      display:block;
+      color:#aaa;
+      font-size:11px;
+      line-height:1.35;
+    }
+
+    .s b{
+      display:block;
+      font-size:21px;
+      margin-top:4px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .spend-hour{
+      border-color:#287651;
+      background:linear-gradient(135deg,#10241b,#153524);
+      box-shadow:inset 0 0 18px rgba(65,190,120,.06);
+    }
+
+    .spend-hour span{
+      color:#94d7ae;
+    }
+
+    .spend-hour b{
+      color:#5ed9a1;
+    }
+
+    .wrap{
+      width:100%;
+      overflow:auto;
+      max-height:600px;
+      margin-top:14px;
+      border:1px solid #303036;
+      border-radius:9px;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    table{
+      border-collapse:collapse;
+      width:100%;
+      min-width:920px;
+    }
+
+    th,td{
+      padding:10px;
+      border-bottom:1px solid #333;
+      text-align:left;
+      white-space:nowrap;
+    }
+
+    th{
+      background:#252329;
+      color:#fff0b6;
+      position:sticky;
+      top:0;
+      z-index:1;
+      font-size:11px;
+    }
+
+    tr:hover td{
+      background:#202026;
+    }
+
+    .active{
+      color:#5ed9a1;
+      font-weight:bold;
+    }
+
+    .review{
+      color:#5ed9ff;
+      font-weight:bold;
+    }
+
+    .scheduled{
+      color:#ffd86d;
+      font-weight:bold;
+    }
+
+    .bad,
+    .cpr-expensive{
+      color:#ff7562;
+      font-weight:bold;
+    }
+
+    .cpr-safe{
+      color:#5ed9a1;
+      font-weight:bold;
+    }
+
+    .cpr-zero{
+      color:#aaa;
+      font-weight:bold;
+    }
+
+    .warning-card{
+      border-color:#9f493b;
+    }
+
+    .warning-item{
+      border:1px solid #7d3b31;
+      background:#241613;
+      border-radius:9px;
+      padding:13px;
+      margin-top:10px;
+      color:#ffd2c8;
+      line-height:1.6;
+      overflow-wrap:anywhere;
+    }
+
+    .warning-item b{
+      color:#ff9976;
+    }
+
+    @media(max-width:800px){
+      body{
+        font-size:13px;
+      }
+
+      main{
+        padding:18px 12px 32px;
+      }
+
+      .g{
+        font-size:11px;
+      }
+
+      h1{
+        font-size:21px;
+        line-height:1.25;
+        margin:5px 0 8px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+        gap:12px;
+      }
+
+      .card{
+        border-radius:12px;
+        padding:13px;
+        margin-bottom:13px;
+      }
+
+      textarea{
+        height:245px;
+        padding:11px;
+        font-size:11px;
+      }
+
+      .actions{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+        margin-bottom:14px;
+      }
+
+      button{
+        width:100%;
+        min-height:45px;
+        padding:10px 8px;
+        font-size:12px;
+      }
+
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+        margin-bottom:13px;
+      }
+
+      .s{
+        min-height:71px;
+        padding:10px;
+        border-radius:10px;
+      }
+
+      .s span{
+        min-height:29px;
+        font-size:10px;
+      }
+
+      .s b{
+        margin-top:3px;
+        font-size:19px;
+      }
+
+      .wrap{
+        max-height:480px;
+        margin-top:12px;
+      }
+
+      table{
+        min-width:790px;
+      }
+
+      th,td{
+        padding:9px 8px;
+        font-size:11px;
+      }
+
+      th{
+        font-size:10px;
+      }
+
+      .warning-item{
+        padding:11px;
+        font-size:12px;
+      }
+    }
+
+    @media(max-width:360px){
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .actions{
+        grid-template-columns:1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <header><div class="brand">MARKETING ADS SG328</div><nav><button class="on" data-page="hour">SPENDING PERJAM</button><button data-page="tiktok">AUTO REPORT TIKTOK</button><button data-page="meta">FILTER ADS META</button></nav></header>
   <main>
-    <section class="page on" id="page-hour">
-      <div class="g">MARKETING ADS SG328</div><h1>TOTAL SPENDING ADS PER JAM</h1><p><b>Made By Mr.Sambo</b></p>
-      <div class="grid"><div class="card"><b>DATA JAM SEBELUMNYA</b><p><textarea id="prev"></textarea></p></div><div class="card"><b>DATA JAM SEKARANG</b><p><textarea id="now"></textarea></p></div></div>
-      <button class="p" id="hourGo">⚡ Hitung Laporan</button><button class="alt" id="hourClear">Hapus Semua</button>
-      <section class="stats"><div class="s"><span>TOTAL CAMPAIGN</span><b id="all">0</b></div><div class="s"><span>CAMPAIGN ACTIVE</span><b id="act">0</b></div><div class="s"><span>CAMPAIGN OFF</span><b id="off">0</b></div><div class="s"><span>CAMPAIGN DISABLED</span><b id="dis">0</b></div><div class="s"><span>TOTAL SPEND SEBELUM</span><b id="ps">$0.00</b></div><div class="s"><span>TOTAL SPEND SEKARANG</span><b id="ns">$0.00</b></div><div class="s"><span>SPEND / JAM</span><b id="sh">$0.00</b></div></section>
-      <section class="card"><b>HASIL TOTAL SPENDING PER JAM META ADS</b><div class="wrap" id="out"></div></section><section class="card warning-card"><b>⚠ PERINGATAN IKLAN MAHAL — CPR DI ATAS $5</b><div id="warning">Belum ada data untuk diperiksa.</div></section>
+    <div class="g">MARKETING ADS SG328</div>
+    <h1>TOTAL SPENDING ADS PER JAM</h1>
+    <p><b>Made By Mr.Sambo</b></p>
+
+    <section class="grid">
+      <div class="card">
+        <b>DATA JAM SEBELUMNYA</b>
+        <p>
+          <textarea id="prev" placeholder="Paste data jam sebelumnya di sini..."></textarea>
+        </p>
+      </div>
+
+      <div class="card">
+        <b>DATA JAM SEKARANG</b>
+        <p>
+          <textarea id="now" placeholder="Paste data jam sekarang di sini..."></textarea>
+        </p>
+      </div>
     </section>
 
-    <section class="page" id="page-tiktok">
-      <iframe src="tiktok-report.html" title="Auto Report TikTok" style="width:100%;min-height:960px;border:0;border-radius:14px;background:#0d0d0e"></iframe>
+    <div class="actions">
+      <button class="p" onclick="go()">⚡ Hitung Laporan</button>
+      <button onclick="clearAll()">✕ Hapus Semua</button>
+    </div>
+
+    <section class="stats">
+      <div class="s">
+        <span>TOTAL ACCOUNT</span>
+        <b id="account">0</b>
+      </div>
+
+      <div class="s">
+        <span>TOTAL CAMPAIGN</span>
+        <b id="all">0</b>
+      </div>
+
+      <div class="s">
+        <span>CAMPAIGN ACTIVE</span>
+        <b id="act">0</b>
+      </div>
+
+      <div class="s" id="card-off" style="display:none">
+        <span>CAMPAIGN OFF</span>
+        <b id="off">0</b>
+      </div>
+
+      <div class="s" id="card-dis" style="display:none">
+        <span>CAMPAIGN DISABLED</span>
+        <b id="dis">0</b>
+      </div>
+
+      <div class="s" id="card-rev" style="display:none">
+        <span>CAMPAIGN IN REVIEW</span>
+        <b id="rev">0</b>
+      </div>
+
+      <div class="s" id="card-sch" style="display:none">
+        <span>CAMPAIGN SCHEDULED</span>
+        <b id="sch">0</b>
+      </div>
+
+      <div class="s">
+        <span>TOTAL SPEND SEBELUM</span>
+        <b id="ps">$0.00</b>
+      </div>
+
+      <div class="s">
+        <span>TOTAL SPEND SEKARANG</span>
+        <b id="ns">$0.00</b>
+      </div>
+
+      <div class="s spend-hour">
+        <span>SPEND / JAM</span>
+        <b id="sh">$0.00</b>
+      </div>
     </section>
 
-    <section class="page" id="page-meta">
-      <div class="g">MARKETING ADS SG328</div><h1>FILTER <span>IKLAN ADS META</span></h1><p class="hint">Filter memakai <b>SPEND</b> dan <b>CPR saat ini</b>. Campaign OFF dan Disabled tidak dimasukkan.</p>
-      <section class="card"><textarea id="raw" placeholder="Paste data campaign di sini..."></textarea><div class="bar"><label class="field">CPR mahal di atas<input id="cprLimit" type="number" value="5" step=".01"></label><label class="field">Mulai cek mahal (%)<input id="earlyPct" type="number" value="9" step="1"></label><label class="field">Batas lanjut (%)<input id="goPct" type="number" value="20" step="1"></label><label class="field">Pengecualian setelah (%)<input id="historyPct" type="number" value="15" step="1"></label><label class="field">CPR MAX murah di bawah<input id="historyCpr" type="number" value="4" step=".01"></label><label class="field">Filter situs<select id="siteFilter"><option value="ALL">Semua situs</option><option value="AMPER88">AMPER88</option><option value="SHOPISLOT">SHOPISLOT</option></select></label><label class="field">Cari No Akun<input id="accountFilter" type="search" placeholder="Contoh: 7841"></label><button class="p" id="process">FILTER SEKARANG</button><button class="alt" id="clear">HAPUS DATA</button></div></section>
-      <section class="summary" id="summary"></section><section class="card" style="padding:12px"><div class="table-wrap"><table><thead><tr><th>Status</th><th>No Akun</th><th>Situs / Agency</th><th>Campaign & Link</th><th>Budget</th><th>Spend Saat Ini</th><th>% Budget</th><th>Result</th><th>CPR Saat Ini</th><th>CPR Max</th><th>CPM</th><th>CPC</th><th>Penjelasan</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+    <section class="card">
+      <b>HASIL TOTAL SPENDING PER JAM META ADS</b>
+      <div class="wrap" id="out"></div>
+    </section>
+
+    <section class="card warning-card">
+      <b>⚠ PERINGATAN IKLAN MAHAL — CPR DI ATAS $5</b>
+      <div id="warning">Belum ada data untuk diperiksa.</div>
     </section>
   </main>
-<script>
-document.querySelectorAll('nav button').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));btn.classList.add('on');document.getElementById('page-'+btn.dataset.page).classList.add('on')});
 
-/* CEK TOTAL SPENDING PER JAM — rumus asli dipertahankan */
-(()=>{const num=value=>{const match=String(value||'').replace(/,/g,'').match(/\d+(\.\d+)?/);return match?Number(match[0]):0};const mon=value=>'$'+num(value).toFixed(2);const escapeHtml=value=>String(value||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');function read(rawText){const campaigns=[];let campaign=null;for(const line of rawText.split(/\n/)){const codeMatch=line.match(/\((\d{3,6})\)/);if(codeMatch){if(campaign)campaigns.push(campaign);campaign={code:codeMatch[1],name:line.trim(),result:0,spend:0,cpr:0,cpm:0,status:'ACTIVE'};continue}if(!campaign)continue;if(/DISABLED/i.test(line))campaign.status='DISABLED';else if(/\bOFF\b/i.test(line))campaign.status='OFF';if(/^RESULT\s*:/i.test(line))campaign.result=num(line);else if(/^SPEND\s*:/i.test(line))campaign.spend=num(line);else if(/^CPR\s*:/i.test(line))campaign.cpr=num(line);else if(/^CPM\s*:/i.test(line))campaign.cpm=num(line)}if(campaign)campaigns.push(campaign);return campaigns}function go(){const previousData=read(prev.value),currentData=read(now.value);if(!previousData.length||!currentData.length){alert('Isi data jam sebelumnya dan jam saat ini terlebih dahulu.');return}const previousMap=new Map(previousData.map(item=>[item.code,item]));const rows=currentData.map(item=>{const previous=previousMap.get(item.code)||{spend:0};return {...item,previousSpend:previous.spend,spendHour:item.spend-previous.spend}}).sort((a,b)=>{if(a.status==='ACTIVE'&&b.status!=='ACTIVE')return -1;if(a.status!=='ACTIVE'&&b.status==='ACTIVE')return 1;return b.spend-a.spend});const sum=(items,key)=>items.reduce((total,item)=>total+(item[key]||0),0);const totalPreviousSpend=sum(previousData,'spend'),totalCurrentSpend=sum(currentData,'spend');all.textContent=rows.length;act.textContent=rows.filter(x=>x.status==='ACTIVE').length;off.textContent=rows.filter(x=>x.status==='OFF').length;dis.textContent=rows.filter(x=>x.status==='DISABLED').length;ps.textContent=mon(totalPreviousSpend);ns.textContent=mon(totalCurrentSpend);sh.textContent=mon(totalCurrentSpend-totalPreviousSpend);const expensiveAds=rows.filter(item=>item.status==='ACTIVE'&&item.cpr>5).sort((a,b)=>b.cpr-a.cpr);warning.innerHTML=expensiveAds.length?expensiveAds.map(item=>`<div class="warning-item"><b>⚠ IKLAN MAHAL — CPR ${mon(item.cpr)}</b><br><br><b>NO AKUN:</b> ${item.code}<br><b>NAMA CAMPAIGN:</b> ${escapeHtml(item.name)}<br><b>SPEND:</b> ${mon(item.spend)}<br><b>CPR:</b> ${mon(item.cpr)}<br><b>CPM:</b> ${mon(item.cpm)}</div>`).join(''):'<p class="active">✓ Aman — tidak ada iklan dengan CPR di atas $5.</p>';out.innerHTML=`<table><thead><tr><th>NO AKUN</th><th>NAMA CAMPAIGN</th><th>STATUS</th><th>SPEND SEBELUM</th><th>SPEND SEKARANG</th><th>SPEND / JAM</th><th>CPR SEKARANG</th></tr></thead><tbody>${rows.map(item=>`<tr><td>${item.code}</td><td>${escapeHtml(item.name)}</td><td class="${item.status==='ACTIVE'?'active':'bad'}">${item.status}</td><td>${mon(item.previousSpend)}</td><td>${mon(item.spend)}</td><td>${mon(item.spendHour)}</td><td class="${item.status==='ACTIVE'?'':'bad'}">${mon(item.cpr)}</td></tr>`).join('')}</tbody></table>`}function clearAll(){prev.value='';now.value='';out.innerHTML='';warning.innerHTML='Belum ada data untuk diperiksa.';all.textContent='0';act.textContent='0';off.textContent='0';dis.textContent='0';ps.textContent='$0.00';ns.textContent='$0.00';sh.textContent='$0.00'}hourGo.onclick=go;hourClear.onclick=clearAll})();
+  <script>
+    const $ = id => document.getElementById(id);
 
-/* FILTER ADS META — rumus asli dipertahankan */
-(()=>{const $=id=>document.getElementById(id),money=n=>Number.isFinite(n)?'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';function num(value){if(value==null)return null;const t=String(value).replace(/[$,\s]/g,'').trim();if(!t||/active/i.test(t))return null;const n=parseFloat(t);return Number.isFinite(n)?n:null}function valueOf(block,label){const re=new RegExp('(?:^|\\n)\\s*'+label.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')+'\\s*:\\s*([^\\n\\r]*)','i');const m=block.match(re);return m?m[1].trim():''}function parse(raw){const starts=[...raw.matchAll(/^(?=[ \t]*(?:AMP\w*|SHP\w*)x)/gim)].map(m=>m.index);if(!starts.length)return[];starts.push(raw.length);const out=[];for(let i=0;i<starts.length-1;i++){const block=raw.slice(starts[i],starts[i+1]).trim(),first=block.split(/\r?\n/)[0].trim(),site=/^\s*AMP/i.test(first)?'AMPER88':/^\s*SHP/i.test(first)?'SHOPISLOT':'LAINNYA',account=(first.match(/\(([^)]+)\)/)||[])[1]||'—',agency=(first.match(/^(?:AMP\w*|SHP\w*)x([^\s]+)/i)||[])[1]||'—',gmt=(first.match(/GMT\s*([+-]\s*\d+)/i)||[])[1]?.replace(/\s/g,'')||'—',budgetMatch=first.match(/\$\s*([\d,.]+)/),budget=budgetMatch?num(budgetMatch[1]):null,spend=num(valueOf(block,'SPEND')),cpr=num(valueOf(block,'CPR')),cprMax=num(valueOf(block,'CPR MAX')),result=num(valueOf(block,'RESULT')),cpm=num(valueOf(block,'CPM')),cpc=num(valueOf(block,'CPC')),link=(block.match(/LINK ADS\s*:\s*(https?:\/\/\S+)/i)||[])[1]||'',spendMaxText=valueOf(block,'SPEND MAX'),active=/active/i.test(spendMaxText),preparing=/preparing/i.test(spendMaxText),statusText=[valueOf(block,'STATUS'),valueOf(block,'ON/OFF'),valueOf(block,'SPEND MAX')].join(' '),inactive=/\b(?:off|disabled)\b/i.test(first+' '+statusText);if(!inactive)out.push({first,site,account,agency,gmt,budget,spend,cpr,cprMax,result,cpm,cpc,link,active,preparing})}return out}function settings(){return{limit:+$('cprLimit').value||5,early:(+$('earlyPct').value||9)/100,go:(+$('goPct').value||20)/100,hist:(+$('historyPct').value||15)/100,histCpr:+$('historyCpr').value||4}}function status(x,s){if(x.spend===null||x.spend===0)return{key:'active',label:x.preparing?'PREPARING':x.active?'ACTIVE — BELUM ADA SPEND':'BELUM ADA DATA',note:'Belum ada spend/CPR untuk dianalisis.'};const p=x.budget?x.spend/x.budget:null;if(p!==null&&p>=.10&&x.cpr===null)return{key:'mahal',label:'IKLAN MAHAL',note:'Spend sudah mencapai 10% budget, tetapi CPR saat ini belum keluar.'};if(!x.result||x.result<=0)return{key:'watch',label:'BELUM ADA HASIL',note:'Spend sudah jalan, tetapi result belum muncul.'};if(p!==null&&p>s.hist&&x.cpr>s.limit&&x.cprMax!==null&&x.cprMax<s.histCpr)return{key:'hold-history',label:'TAHAN DULU',note:'Kemarin masih dapat murah: CPR MAX '+money(x.cprMax)+'.'};if(p!==null&&p>=s.early&&x.cpr>s.limit)return{key:'mahal',label:'IKLAN MAHAL',note:'CPR saat ini '+money(x.cpr)+' di atas batas '+money(s.limit)+'.'};if(p!==null&&p>=s.go&&x.cpr<=s.limit)return{key:'go',label:'LANJUTKAN',note:'Lolos evaluasi '+Math.round(s.go*100)+'% budget dengan CPR masih aman.'};if(p!==null&&p>=.10&&x.cpr<=s.limit)return{key:'hold',label:'TAHAN DULU',note:'CPR aman. Tahan sampai '+Math.round(s.go*100)+'% budget.'};return{key:'watch',label:'PANTAU',note:p===null?'Budget tidak terbaca.':'Spend belum masuk batas evaluasi.'}}function run(){const s=settings(),filter=$('siteFilter').value,accountQuery=$('accountFilter').value.trim();let data=parse($('raw').value).map(x=>({...x,st:status(x,s)}));if(filter!=='ALL')data=data.filter(x=>x.site===filter);if(accountQuery)data=data.filter(x=>x.account.includes(accountQuery));const rank={mahal:0,'hold-history':1,hold:2,watch:3,go:4,active:5};data.sort((a,b)=>rank[a.st.key]-rank[b.st.key]||(b.cpr??-1)-(a.cpr??-1));const total=data.reduce((n,x)=>n+(x.spend||0),0),mahal=data.filter(x=>x.st.key==='mahal').length,hold=data.filter(x=>x.st.key==='hold-history'||x.st.key==='hold').length,go=data.filter(x=>x.st.key==='go').length;$('summary').innerHTML=[['Campaign terbaca',data.length,''],['Total spend',money(total),''],['Iklan mahal',mahal,'color:var(--red)'],['Tahan dulu',hold,'color:var(--amber)'],['Lanjutkan',go,'color:var(--green)']].map(x=>`<div class="sum"><small>${x[0]}</small><b style="${x[2]}">${x[1]}</b></div>`).join('');$('rows').innerHTML=data.length?data.map(x=>{const p=x.budget&&x.spend!==null?x.spend/x.budget:null,name=x.first.replace(/</g,'&lt;'),blank=v=>Number.isFinite(v)?money(v):'';return`<tr class="${x.st.key==='mahal'?'danger':''}"><td><span class="badge ${x.st.key}">${x.st.label}</span></td><td><b>${x.account}</b><div class="meta">GMT ${x.gmt}</div></td><td><b>${x.site}</b><div class="meta">Agency: ${x.agency}</div></td><td style="white-space:normal;min-width:300px"><b>${name}</b><div class="meta">${x.link?`<a href="${x.link}" target="_blank" style="color:#8bbcff">${x.link}</a>`:'Link tidak ada'}</div></td><td>${blank(x.budget)}</td><td>${x.preparing&&x.spend===null?'PREPARING':x.active&&x.spend===null?'ACTIVE':blank(x.spend)}</td><td>${p===null?'':(p*100).toFixed(2)+'%'}</td><td>${x.result??''}</td><td><b>${blank(x.cpr)}</b></td><td>${blank(x.cprMax)}</td><td>${blank(x.cpm)}</td><td>${blank(x.cpc)}</td><td><div class="note">${x.st.note}</div></td></tr>`}).join(''):'<tr><td colspan="13" style="padding:26px;text-align:center">Tidak ada campaign yang bisa dibaca.</td></tr>';localStorage.setItem('adsFilterRaw',$('raw').value)}$('process').onclick=run;$('clear').onclick=()=>{$('raw').value='';localStorage.removeItem('adsFilterRaw');run()};$('siteFilter').onchange=run;$('accountFilter').oninput=run;run()})();
+    const prev = $('prev');
+    const now = $('now');
+    const out = $('out');
+    const warning = $('warning');
 
-;
-</script>
+    const account = $('account');
+    const all = $('all');
+    const act = $('act');
+    const off = $('off');
+    const dis = $('dis');
+    const rev = $('rev');
+    const sch = $('sch');
+    const ps = $('ps');
+    const ns = $('ns');
+    const sh = $('sh');
+
+    const cardOff = $('card-off');
+    const cardDis = $('card-dis');
+    const cardRev = $('card-rev');
+    const cardSch = $('card-sch');
+
+    const num = value => {
+      const match = String(value || '')
+        .replace(/,/g, '')
+        .match(/\d+(\.\d+)?/);
+
+      return match ? Number(match[0]) : 0;
+    };
+
+    const mon = value => '$' + num(value).toLocaleString('en-US', {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+
+    const escapeHtml = value => String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    function showWhenNotZero(card, value) {
+      card.style.display = value > 0 ? '' : 'none';
+    }
+
+    function statusClass(status) {
+      if (status === 'ACTIVE') return 'active';
+      if (status === 'IN REVIEW') return 'review';
+      if (status === 'SCHEDULED') return 'scheduled';
+      return 'bad';
+    }
+
+    /* CPR > $5 merah | CPR $0.01 sampai $5 hijau | CPR $0 abu-abu */
+    function cprClass(cpr) {
+      if (cpr > 5) return 'cpr-expensive';
+      if (cpr > 0) return 'cpr-safe';
+      return 'cpr-zero';
+    }
+
+    function statusRank(status) {
+      const order = {
+        'ACTIVE': 1,
+        'IN REVIEW': 2,
+        'SCHEDULED': 3,
+        'OFF': 4,
+        'DISABLED': 5
+      };
+
+      return order[status] || 99;
+    }
+
+    function read(rawText) {
+      const campaigns = [];
+      let campaign = null;
+
+      for (const line of rawText.split(/\n/)) {
+        const codeMatch = line.match(/\((\d{3,6})\)/);
+
+        if (codeMatch) {
+          if (campaign) campaigns.push(campaign);
+
+          campaign = {
+            code: codeMatch[1],
+            name: line.trim(),
+            result: 0,
+            spend: 0,
+            cpr: 0,
+            cpm: 0,
+            status: 'ACTIVE'
+          };
+
+          continue;
+        }
+
+        if (!campaign) continue;
+
+        if (/DISABLED/i.test(line)) {
+          campaign.status = 'DISABLED';
+
+        } else if (/IN\s*REVIEW|UNDER\s*REVIEW/i.test(line)) {
+          campaign.status = 'IN REVIEW';
+
+        } else if (/SCHEDULED/i.test(line)) {
+          campaign.status = 'SCHEDULED';
+
+        } else if (/\bOFF\b/i.test(line)) {
+          campaign.status = 'OFF';
+        }
+
+        if (/^RESULT\s*:/i.test(line)) {
+          campaign.result = num(line);
+
+        } else if (/^SPEND\s*:/i.test(line)) {
+          campaign.spend = num(line);
+
+        } else if (/^CPR\s*:/i.test(line)) {
+          campaign.cpr = num(line);
+
+        } else if (/^CPM\s*:/i.test(line)) {
+          campaign.cpm = num(line);
+        }
+      }
+
+      if (campaign) campaigns.push(campaign);
+
+      return campaigns;
+    }
+
+    function go() {
+      const previousData = read(prev.value);
+      const currentData = read(now.value);
+
+      if (!previousData.length || !currentData.length) {
+        alert('Isi data jam sebelumnya dan jam saat ini terlebih dahulu.');
+        return;
+      }
+
+      const previousMap = new Map(
+        previousData.map(item => [item.code, item])
+      );
+
+      const rows = currentData
+        .map(item => {
+          const previous = previousMap.get(item.code) || {spend:0};
+
+          return {
+            ...item,
+            previousSpend: previous.spend,
+            spendHour: item.spend - previous.spend
+          };
+        })
+        .sort((a, b) => {
+          const statusDifference =
+            statusRank(a.status) - statusRank(b.status);
+
+          if (statusDifference !== 0) return statusDifference;
+
+          return b.spend - a.spend;
+        });
+
+      const sum = (items, key) =>
+        items.reduce((total, item) => total + (item[key] || 0), 0);
+
+      const totalPreviousSpend = sum(previousData, 'spend');
+      const totalCurrentSpend = sum(currentData, 'spend');
+
+      const uniqueAccounts = new Set(rows.map(item => item.code));
+
+      const activeCount = rows.filter(x => x.status === 'ACTIVE').length;
+      const offCount = rows.filter(x => x.status === 'OFF').length;
+      const disabledCount = rows.filter(x => x.status === 'DISABLED').length;
+      const reviewCount = rows.filter(x => x.status === 'IN REVIEW').length;
+      const scheduledCount = rows.filter(x => x.status === 'SCHEDULED').length;
+
+      account.textContent = uniqueAccounts.size;
+      all.textContent = rows.length;
+
+      act.textContent = activeCount;
+      off.textContent = offCount;
+      dis.textContent = disabledCount;
+      rev.textContent = reviewCount;
+      sch.textContent = scheduledCount;
+
+      showWhenNotZero(cardOff, offCount);
+      showWhenNotZero(cardDis, disabledCount);
+      showWhenNotZero(cardRev, reviewCount);
+      showWhenNotZero(cardSch, scheduledCount);
+
+      ps.textContent = mon(totalPreviousSpend);
+      ns.textContent = mon(totalCurrentSpend);
+      sh.textContent = mon(totalCurrentSpend - totalPreviousSpend);
+
+      const expensiveAds = rows
+        .filter(item => item.status === 'ACTIVE' && item.cpr > 5)
+        .sort((a, b) => b.cpr - a.cpr);
+
+      warning.innerHTML = expensiveAds.length
+        ? expensiveAds.map(item => `
+            <div class="warning-item">
+              <b>⚠ IKLAN MAHAL — CPR ${mon(item.cpr)}</b><br><br>
+              <b>NO AKUN:</b> ${item.code}<br>
+              <b>NAMA CAMPAIGN:</b> ${escapeHtml(item.name)}<br>
+              <b>SPEND:</b> ${mon(item.spend)}<br>
+              <b>CPR:</b> ${mon(item.cpr)}<br>
+              <b>CPM:</b> ${mon(item.cpm)}
+            </div>
+          `).join('')
+        : '<p class="active">✓ Aman — tidak ada iklan ACTIVE dengan CPR di atas $5.</p>';
+
+      out.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>NO AKUN</th>
+              <th>NAMA CAMPAIGN</th>
+              <th>STATUS</th>
+              <th>SPEND SEBELUM</th>
+              <th>SPEND SEKARANG</th>
+              <th>SPEND / JAM</th>
+              <th>CPR SEKARANG</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${rows.map(item => `
+              <tr>
+                <td>${item.code}</td>
+                <td>${escapeHtml(item.name)}</td>
+                <td class="${statusClass(item.status)}">${item.status}</td>
+                <td>${mon(item.previousSpend)}</td>
+                <td>${mon(item.spend)}</td>
+                <td>${mon(item.spendHour)}</td>
+                <td class="${cprClass(item.cpr)}">${mon(item.cpr)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function clearAll() {
+      prev.value = '';
+      now.value = '';
+
+      out.innerHTML = '';
+      warning.innerHTML = 'Belum ada data untuk diperiksa.';
+
+      account.textContent = '0';
+      all.textContent = '0';
+      act.textContent = '0';
+      off.textContent = '0';
+      dis.textContent = '0';
+      rev.textContent = '0';
+      sch.textContent = '0';
+
+      cardOff.style.display = 'none';
+      cardDis.style.display = 'none';
+      cardRev.style.display = 'none';
+      cardSch.style.display = 'none';
+
+      ps.textContent = '$0.00';
+      ns.textContent = '$0.00';
+      sh.textContent = '$0.00';
+    }
+  </script>
 </body>
 </html>
