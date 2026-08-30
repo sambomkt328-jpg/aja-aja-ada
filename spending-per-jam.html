@@ -1,1 +1,731 @@
-href="./spending-per-jam.html"
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Total Spending Per Jam</title>
+
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --card:#16161a;
+      --card-2:#1e1d22;
+      --line:#3c3b43;
+      --gold:#ffd45f;
+      --text:#f6f5f7;
+      --muted:#a7a4ac;
+      --green:#58e6aa;
+      --green-bg:#0c3927;
+      --red:#ff8977;
+      --red-bg:#411b19;
+      --yellow:#ffd45f;
+      --cyan:#66d9ff;
+      --gray:#aaa9b0;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-width:320px;
+      background:
+        radial-gradient(circle at 78% 0%,rgba(159,111,14,.15),transparent 28%),
+        linear-gradient(135deg,#09090b,#101014 65%,#0a0a0c);
+      color:var(--text);
+      font:14px Arial,sans-serif;
+    }
+
+    main{
+      max-width:1500px;
+      margin:auto;
+      padding:28px 20px 42px;
+    }
+
+    .eyebrow{
+      color:var(--gold);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.8px;
+    }
+
+    h1{
+      margin:6px 0 5px;
+      color:#fff0b8;
+      font-size:28px;
+    }
+
+    .made{
+      margin:0 0 20px;
+      color:var(--gold);
+      font-weight:700;
+    }
+
+    .input-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:16px;
+    }
+
+    .card{
+      background:rgba(22,22,26,.96);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 12px 35px rgba(0,0,0,.16);
+    }
+
+    .card-title{
+      color:var(--gold);
+      font-weight:800;
+      font-size:13px;
+      display:block;
+      margin-bottom:12px;
+    }
+
+    textarea{
+      display:block;
+      width:100%;
+      min-height:310px;
+      resize:vertical;
+      border:1px solid #46444d;
+      border-radius:10px;
+      background:#0e0e11;
+      color:#fff;
+      padding:13px;
+      outline:none;
+      font:12px/1.55 Consolas,"Courier New",monospace;
+      transition:border-color .2s,box-shadow .2s;
+    }
+
+    textarea:focus{
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(255,212,95,.13);
+    }
+
+    textarea::placeholder{color:#787580}
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:16px 0;
+    }
+
+    button{
+      border:1px solid transparent;
+      border-radius:10px;
+      padding:12px 16px;
+      color:#fff;
+      background:#29282e;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .14s ease,box-shadow .14s ease,
+        background .14s ease,border-color .14s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 18px rgba(0,0,0,.28);
+    }
+
+    button:active{
+      transform:translateY(1px) scale(.97);
+      box-shadow:none;
+    }
+
+    .primary{
+      color:#201706;
+      background:linear-gradient(135deg,#ffe28b,#efbe43);
+      box-shadow:0 6px 17px rgba(234,181,54,.18);
+    }
+
+    .primary:hover{
+      background:linear-gradient(135deg,#ffecad,#f5c648);
+    }
+
+    .secondary{
+      border-color:#55535d;
+      background:#2a292f;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:11px;
+      margin-bottom:18px;
+    }
+
+    .stat{
+      min-height:79px;
+      padding:13px;
+      border:1px solid #414049;
+      border-radius:10px;
+      background:#151519;
+    }
+
+    .stat.hidden{display:none}
+
+    .stat span{
+      display:block;
+      color:#bebbc3;
+      font-size:11px;
+      margin-bottom:7px;
+    }
+
+    .stat b{
+      display:block;
+      color:var(--gold);
+      font-size:21px;
+      line-height:1;
+    }
+
+    .stat.hour{
+      border-color:#217852;
+      background:linear-gradient(135deg,#0b2d20,#0d3d2a);
+    }
+
+    .stat.hour span{color:#a0e6c5}
+    .stat.hour b{color:var(--green)}
+
+    .table-card{padding:16px}
+
+    .table-wrap{
+      overflow:auto;
+      max-height:610px;
+      border:1px solid #393841;
+      border-radius:10px;
+      scrollbar-color:#77747e #242329;
+      scrollbar-width:thin;
+    }
+
+    table{
+      width:100%;
+      min-width:1060px;
+      border-collapse:collapse;
+    }
+
+    th,td{
+      padding:11px 10px;
+      border-bottom:1px solid #302f35;
+      text-align:left;
+      vertical-align:middle;
+    }
+
+    th{
+      position:sticky;
+      z-index:2;
+      top:0;
+      background:#252329;
+      color:#fff0b6;
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    td{white-space:nowrap}
+    td.name{min-width:510px;white-space:normal;line-height:1.35}
+    td.money{font-weight:700}
+
+    tr:hover td{background:#1c1b20}
+
+    .status{
+      font-weight:900;
+      font-size:12px;
+    }
+
+    .status-active{color:var(--green)}
+    .status-off{color:var(--red)}
+    .status-disabled{color:#aaa8ae}
+    .status-review{color:var(--cyan)}
+    .status-scheduled{color:var(--yellow)}
+
+    .cpr-safe{
+      color:var(--green);
+      font-weight:900;
+    }
+
+    .cpr-expensive{
+      color:var(--red);
+      font-weight:900;
+    }
+
+    .cpr-empty{color:#aaa8ae}
+
+    .warning-card{
+      margin-top:18px;
+      border-color:#88493f;
+    }
+
+    .warning-title{color:#ffae98}
+
+    .warning-item{
+      margin-top:10px;
+      padding:13px;
+      border:1px solid #773b34;
+      border-radius:10px;
+      background:var(--red-bg);
+      color:#ffd7cf;
+      line-height:1.55;
+    }
+
+    .warning-item b{color:var(--red)}
+
+    .safe-message{
+      color:var(--green);
+      font-weight:700;
+      margin:0;
+    }
+
+    .empty-row{
+      text-align:center;
+      color:var(--muted);
+      padding:28px;
+    }
+
+    @media(max-width:900px){
+      main{padding:20px 14px 34px}
+      h1{font-size:23px}
+      .input-grid{grid-template-columns:1fr}
+      textarea{min-height:250px}
+      .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+
+    @media(max-width:520px){
+      .stats{gap:8px}
+      .stat{min-height:70px;padding:11px}
+      .stat span{font-size:10px}
+      .stat b{font-size:19px}
+      .actions button{flex:1;padding:12px 9px}
+      .table-card{padding:12px}
+      .card{padding:13px}
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="eyebrow">MARKETING ADS SG328</div>
+    <h1>TOTAL SPENDING ADS PER JAM</h1>
+    <p class="made">Made By Mr.Sambo</p>
+
+    <section class="input-grid">
+      <div class="card">
+        <span class="card-title">DATA JAM SEBELUMNYA</span>
+        <textarea id="prev" placeholder="Paste data jam sebelumnya di sini..."></textarea>
+      </div>
+
+      <div class="card">
+        <span class="card-title">DATA JAM SEKARANG</span>
+        <textarea id="now" placeholder="Paste data jam sekarang di sini..."></textarea>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="primary" onclick="go()">⚡ Hitung Laporan</button>
+      <button class="secondary" onclick="clearAll()">✕ Hapus Semua</button>
+    </div>
+
+    <section class="stats">
+      <div class="stat">
+        <span>TOTAL ACCOUNT</span>
+        <b id="all">0</b>
+      </div>
+
+      <div class="stat">
+        <span>TOTAL CAMPAIGN</span>
+        <b id="campaignTotal">0</b>
+      </div>
+
+      <div class="stat">
+        <span>CAMPAIGN ACTIVE</span>
+        <b id="act">0</b>
+      </div>
+
+      <div class="stat" id="offCard">
+        <span>CAMPAIGN OFF</span>
+        <b id="off">0</b>
+      </div>
+
+      <div class="stat" id="disCard">
+        <span>CAMPAIGN DISABLED</span>
+        <b id="dis">0</b>
+      </div>
+
+      <div class="stat" id="reviewCard">
+        <span>CAMPAIGN IN REVIEW</span>
+        <b id="review">0</b>
+      </div>
+
+      <div class="stat" id="scheduledCard">
+        <span>CAMPAIGN SCHEDULED</span>
+        <b id="scheduled">0</b>
+      </div>
+
+      <div class="stat">
+        <span>TOTAL SPEND SEBELUM</span>
+        <b id="ps">$0.00</b>
+      </div>
+
+      <div class="stat">
+        <span>TOTAL SPEND SEKARANG</span>
+        <b id="ns">$0.00</b>
+      </div>
+
+      <div class="stat hour">
+        <span>SPEND / JAM</span>
+        <b id="sh">$0.00</b>
+      </div>
+    </section>
+
+    <section class="card table-card">
+      <span class="card-title">HASIL TOTAL SPENDING PER JAM META ADS</span>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>NO AKUN</th>
+              <th>NAMA CAMPAIGN</th>
+              <th>STATUS</th>
+              <th>SPEND SEBELUM</th>
+              <th>SPEND SEKARANG</th>
+              <th>SPEND / JAM</th>
+              <th>CPR SEKARANG</th>
+            </tr>
+          </thead>
+          <tbody id="out">
+            <tr>
+              <td colspan="7" class="empty-row">
+                Paste dua data lalu tekan “Hitung Laporan”.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card warning-card">
+      <span class="card-title warning-title">
+        ⚠ PERINGATAN IKLAN MAHAL — CPR DI ATAS $5
+      </span>
+      <div id="warning">Belum ada data untuk diperiksa.</div>
+    </section>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    const num = value => {
+      const text = String(value || '')
+        .replace(/,/g, '')
+        .replace(/\$/g, '');
+
+      const match = text.match(/-?\d+(?:\.\d+)?/);
+      return match ? Number(match[0]) : 0;
+    };
+
+    const money = value => {
+      const number = Number(value || 0);
+      return '$' + number.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    };
+
+    const escapeHtml = value => String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    const normalText = value => String(value || '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    function statusOf(lines) {
+      const text = normalText(lines.join(' '));
+
+      if (/\bdisabled\b/.test(text)) return 'DISABLED';
+      if (/\boff\b|\bpaused\b|\bstopped\b/.test(text)) return 'OFF';
+
+      if (
+        /\bin review\b|\breview\b|under review|menunggu review|pending review/.test(text)
+      ) return 'IN REVIEW';
+
+      if (
+        /\bscheduled\b|\bterjadwal\b|\bjadwal\b/.test(text)
+      ) return 'SCHEDULED';
+
+      return 'ACTIVE';
+    }
+
+    function valueFromLines(lines, label) {
+      const labelPattern = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+      for (const line of lines) {
+        const match = line.match(
+          new RegExp('^\\s*' + labelPattern + '\\s*:?\\s*(.*)$', 'i')
+        );
+
+        if (match) return num(match[1]);
+      }
+
+      return 0;
+    }
+
+    function splitCampaigns(rawText) {
+      const lines = String(rawText || '')
+        .replace(/\r/g, '')
+        .split('\n');
+
+      const blocks = [];
+      let current = null;
+
+      for (const originalLine of lines) {
+        const line = originalLine.trim();
+
+        if (!line) continue;
+
+        /*
+          Campaign baru dibaca dari baris yang memiliki nomor akun,
+          contoh: EDUTOTOxBGPM GMT-7 (1281) ...
+        */
+        const accountMatch = line.match(/\((\d{3,8})\)/);
+
+        const isField = /^(RESULT|SPEND|CPR|CPM|CPC|STATUS|BUDGET|PXL|LINK)/i.test(line);
+
+        if (accountMatch && !isField) {
+          if (current) blocks.push(current);
+
+          current = {
+            code: accountMatch[1],
+            name: line,
+            lines: [line]
+          };
+
+          continue;
+        }
+
+        if (current) current.lines.push(line);
+      }
+
+      if (current) blocks.push(current);
+
+      return blocks;
+    }
+
+    function read(rawText) {
+      return splitCampaigns(rawText).map(block => {
+        const allLines = block.lines;
+
+        return {
+          code: block.code,
+          name: block.name,
+          status: statusOf(allLines),
+          result: valueFromLines(allLines, 'RESULT'),
+          spend: valueFromLines(allLines, 'SPEND'),
+          cpr: valueFromLines(allLines, 'CPR'),
+          cpm: valueFromLines(allLines, 'CPM'),
+          cpc: valueFromLines(allLines, 'CPC'),
+          key: block.code + '|' + normalText(block.name)
+        };
+      });
+    }
+
+    function statusClass(status) {
+      if (status === 'ACTIVE') return 'status-active';
+      if (status === 'OFF') return 'status-off';
+      if (status === 'DISABLED') return 'status-disabled';
+      if (status === 'IN REVIEW') return 'status-review';
+      return 'status-scheduled';
+    }
+
+    function cprClass(cpr) {
+      if (!cpr) return 'cpr-empty';
+      return cpr > 5 ? 'cpr-expensive' : 'cpr-safe';
+    }
+
+    function setVisible(cardId, amount) {
+      $(cardId).classList.toggle('hidden', amount === 0);
+    }
+
+    function renderEmpty(message) {
+      $('out').innerHTML = `
+        <tr>
+          <td colspan="7" class="empty-row">${escapeHtml(message)}</td>
+        </tr>
+      `;
+    }
+
+    function go() {
+      const previousData = read($('prev').value);
+      const currentData = read($('now').value);
+
+      if (!previousData.length || !currentData.length) {
+        renderEmpty('Data tidak terbaca. Pastikan setiap campaign memiliki nomor akun, contoh: (1281).');
+        alert('Isi data jam sebelumnya dan jam sekarang terlebih dahulu.');
+        return;
+      }
+
+      /*
+        Dicocokkan dengan nomor akun + nama campaign,
+        jadi akun sama dengan campaign berbeda tetap dihitung terpisah.
+      */
+      const previousMap = new Map(
+        previousData.map(item => [item.key, item])
+      );
+
+      const previousByCode = new Map();
+
+      previousData.forEach(item => {
+        previousByCode.set(
+          item.code,
+          (previousByCode.get(item.code) || 0) + item.spend
+        );
+      });
+
+      const usedFallbackCodes = new Set();
+
+      const rows = currentData.map(item => {
+        let previous = previousMap.get(item.key);
+
+        /*
+          Jika nama campaign berubah sedikit tetapi nomor akun sama,
+          gunakan total spend dari nomor akun itu sebagai cadangan,
+          hanya untuk satu campaign agar tidak dobel hitung.
+        */
+        if (!previous && !usedFallbackCodes.has(item.code)) {
+          previous = { spend: previousByCode.get(item.code) || 0 };
+          usedFallbackCodes.add(item.code);
+        }
+
+        return {
+          ...item,
+          previousSpend: previous ? previous.spend : 0,
+          spendHour: item.spend - (previous ? previous.spend : 0)
+        };
+      }).sort((a, b) => {
+        const order = {
+          'ACTIVE': 1,
+          'IN REVIEW': 2,
+          'SCHEDULED': 3,
+          'OFF': 4,
+          'DISABLED': 5
+        };
+
+        if (order[a.status] !== order[b.status]) {
+          return order[a.status] - order[b.status];
+        }
+
+        return b.spend - a.spend;
+      });
+
+      const totalPreviousSpend = previousData.reduce(
+        (sum, item) => sum + item.spend, 0
+      );
+
+      const totalCurrentSpend = currentData.reduce(
+        (sum, item) => sum + item.spend, 0
+      );
+
+      const activeCount = rows.filter(x => x.status === 'ACTIVE').length;
+      const offCount = rows.filter(x => x.status === 'OFF').length;
+      const disabledCount = rows.filter(x => x.status === 'DISABLED').length;
+      const reviewCount = rows.filter(x => x.status === 'IN REVIEW').length;
+      const scheduledCount = rows.filter(x => x.status === 'SCHEDULED').length;
+
+      /*
+        TOTAL ACCOUNT = nomor akun unik.
+        TOTAL CAMPAIGN = semua campaign, termasuk nomor akun kembar.
+      */
+      $('all').textContent = new Set(rows.map(item => item.code)).size;
+      $('campaignTotal').textContent = rows.length;
+      $('act').textContent = activeCount;
+      $('off').textContent = offCount;
+      $('dis').textContent = disabledCount;
+      $('review').textContent = reviewCount;
+      $('scheduled').textContent = scheduledCount;
+
+      setVisible('offCard', offCount);
+      setVisible('disCard', disabledCount);
+      setVisible('reviewCard', reviewCount);
+      setVisible('scheduledCard', scheduledCount);
+
+      $('ps').textContent = money(totalPreviousSpend);
+      $('ns').textContent = money(totalCurrentSpend);
+      $('sh').textContent = money(totalCurrentSpend - totalPreviousSpend);
+
+      $('out').innerHTML = rows.map(item => `
+        <tr>
+          <td>${escapeHtml(item.code)}</td>
+          <td class="name">${escapeHtml(item.name)}</td>
+          <td class="status ${statusClass(item.status)}">
+            ${escapeHtml(item.status)}
+          </td>
+          <td class="money">${money(item.previousSpend)}</td>
+          <td class="money">${money(item.spend)}</td>
+          <td class="money">${money(item.spendHour)}</td>
+          <td class="${cprClass(item.cpr)}">${money(item.cpr)}</td>
+        </tr>
+      `).join('');
+
+      const expensiveAds = rows
+        .filter(item => item.status === 'ACTIVE' && item.cpr > 5)
+        .sort((a, b) => b.cpr - a.cpr);
+
+      $('warning').innerHTML = expensiveAds.length
+        ? expensiveAds.map(item => `
+          <div class="warning-item">
+            <b>⚠ IKLAN MAHAL — CPR ${money(item.cpr)}</b><br><br>
+            <b>NO AKUN:</b> ${escapeHtml(item.code)}<br>
+            <b>NAMA CAMPAIGN:</b> ${escapeHtml(item.name)}<br>
+            <b>SPEND:</b> ${money(item.spend)}<br>
+            <b>SPEND / JAM:</b> ${money(item.spendHour)}<br>
+            <b>CPR:</b> ${money(item.cpr)}<br>
+            <b>CPM:</b> ${money(item.cpm)}
+          </div>
+        `).join('')
+        : '<p class="safe-message">✓ Aman — tidak ada campaign ACTIVE dengan CPR di atas $5.</p>';
+
+      localStorage.setItem('spendPerJamPrev', $('prev').value);
+      localStorage.setItem('spendPerJamNow', $('now').value);
+    }
+
+    function clearAll() {
+      $('prev').value = '';
+      $('now').value = '';
+
+      localStorage.removeItem('spendPerJamPrev');
+      localStorage.removeItem('spendPerJamNow');
+
+      $('all').textContent = '0';
+      $('campaignTotal').textContent = '0';
+      $('act').textContent = '0';
+      $('off').textContent = '0';
+      $('dis').textContent = '0';
+      $('review').textContent = '0';
+      $('scheduled').textContent = '0';
+
+      $('offCard').classList.add('hidden');
+      $('disCard').classList.add('hidden');
+      $('reviewCard').classList.add('hidden');
+      $('scheduledCard').classList.add('hidden');
+
+      $('ps').textContent = '$0.00';
+      $('ns').textContent = '$0.00';
+      $('sh').textContent = '$0.00';
+
+      renderEmpty('Paste dua data lalu tekan “Hitung Laporan”.');
+      $('warning').textContent = 'Belum ada data untuk diperiksa.';
+    }
+
+    $('prev').value = localStorage.getItem('spendPerJamPrev') || '';
+    $('now').value = localStorage.getItem('spendPerJamNow') || '';
+
+    clearAll();
+  </script>
+</body>
+</html>
