@@ -410,6 +410,12 @@
       box-shadow:inset 0 1px 0 rgba(119,255,188,.08);
     }
 
+    /* Angka total SPEND / JAM dibuat kuning. */
+    .stat.hour b{color:var(--gold)}
+
+    /* Nominal pada kolom SPEND / JAM di tabel juga kuning. */
+    td.spend-hour{color:var(--gold)}
+
     .table-wrap{
       border-radius:14px;
       border-color:#3c3a44;
@@ -804,7 +810,9 @@
           </td>
           <td class="money">${money(item.previousSpend)}</td>
           <td class="money">${money(item.spend)}</td>
-          <td class="money">${money(item.spendHour)}</td>
+          <td class="money ${item.spendHour !== 0 ? 'spend-hour' : ''}">
+            ${money(item.spendHour)}
+          </td>
           <td class="${cprClass(item.cpr)}">${money(item.cpr)}</td>
         </tr>
       `).join('');
