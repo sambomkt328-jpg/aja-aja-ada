@@ -26,13 +26,101 @@
       .grid{grid-template-columns:1fr}
       textarea,pre{height:340px}
     }
+    /* Modern visual layer — parser dan rumus JavaScript tidak diubah. */
+    body{
+      min-width:320px;
+      background:
+        radial-gradient(circle at 8% 0%,rgba(168,85,247,.18),transparent 26%),
+        radial-gradient(circle at 91% 11%,rgba(255,204,72,.16),transparent 24%),
+        radial-gradient(circle at 70% 100%,rgba(72,194,255,.1),transparent 29%),
+        #09090e;
+    }
+
+    main{padding-top:45px}
+    .ey{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid rgba(233,184,74,.33);border-radius:999px;background:rgba(233,184,74,.08);font-size:11px;font-weight:900;letter-spacing:.75px}
+    h1{margin:14px 0 8px;font-size:clamp(28px,4vw,43px);letter-spacing:-1.55px}
+    main>p:not(.ey){color:#aaa8b7}
+
+    .card{
+      border-color:rgba(255,255,255,.13);
+      border-radius:20px;
+      background:linear-gradient(145deg,rgba(31,30,41,.88),rgba(17,17,24,.9));
+      box-shadow:0 18px 40px rgba(0,0,0,.18);
+      backdrop-filter:blur(14px);
+    }
+
+    textarea,pre{
+      border-radius:14px;
+      border-color:#484754;
+      background:rgba(7,7,11,.72);
+    }
+
+    textarea:focus{box-shadow:0 0 0 4px rgba(233,184,74,.13)}
+
+    button{
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      border:1px solid #585560;
+      border-radius:12px;
+      transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+    }
+
+    button::after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      top:50%;left:50%;width:0;height:0;
+      border-radius:50%;
+      background:rgba(255,255,255,.29);
+      transform:translate(-50%,-50%);
+      transition:width .42s ease,height .42s ease;
+    }
+
+    button:hover{transform:translateY(-3px);box-shadow:0 11px 24px rgba(0,0,0,.34)}
+    button:active{transform:translateY(1px) scale(.97)}
+    button:active::after{width:260px;height:260px}
+    .p{background:linear-gradient(135deg,#ffe99e,#f5c33d);box-shadow:0 7px 19px rgba(240,190,59,.22)}
+
+    .stats{gap:11px;margin-bottom:16px}
+    .stat{
+      position:relative;
+      overflow:hidden;
+      min-height:88px;
+      padding:13px;
+      border-color:rgba(255,255,255,.13);
+      border-radius:15px;
+      background:linear-gradient(145deg,#1d1c24,#131318);
+      transition:transform .18s ease,border-color .18s ease;
+    }
+
+    .stat::after{
+      content:"";
+      position:absolute;
+      top:-48px;right:-36px;width:112px;height:112px;
+      border-radius:50%;background:rgba(233,184,74,.08);filter:blur(7px);
+    }
+
+    .stat:hover{transform:translateY(-3px);border-color:rgba(233,184,74,.45)}
+    .stat b{font-size:23px;letter-spacing:-.5px}
+
+    .warn{
+      border-color:rgba(255,122,105,.52);
+      background:linear-gradient(145deg,rgba(52,24,29,.79),rgba(22,17,24,.9));
+    }
+
+    .warn pre{border-color:#7b4039;background:rgba(39,20,23,.72);border-radius:14px}
+    .toggle{padding:10px 11px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:rgba(255,255,255,.035)}
+
+    @media(max-width:850px){main{padding-top:29px}}
+    @media(max-width:520px){.card{padding:14px;border-radius:16px}.stats{grid-template-columns:1fr}.stat{min-height:75px}textarea,pre{height:310px}}
   </style>
 </head>
 
 <body>
   <main>
     <p class="ey">MARKETING ADS SG328</p>
-    <h1>AUTO REPORT LAPORAN TIKTOK EDUTOTO</h1>
+    <h1>AUTO REPORT LAPORAN TIKTOK MKT328</h1>
     <p>Made By Mr.Sambo</p>
 
     <section class="grid">
