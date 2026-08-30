@@ -6,87 +6,251 @@
   <title>Marketing Ads SG328</title>
 
   <style>
+    :root{
+      --bg:#09090d;
+      --text:#f8f7ff;
+      --muted:#a9a8b8;
+      --yellow:#ffd75a;
+      --purple:#a855f7;
+      --blue:#36b8ff;
+      --line:rgba(255,255,255,.13);
+    }
+
     *{box-sizing:border-box}
 
     body{
-      margin:0;
       min-width:320px;
       min-height:100vh;
-      display:grid;
-      place-items:center;
-      background:
-        radial-gradient(circle at 74% 2%,rgba(166,118,18,.17),transparent 27%),
-        linear-gradient(135deg,#08080a,#111115);
-      color:#f8f7f8;
+      margin:0;
+      overflow-x:hidden;
+      color:var(--text);
+      background:#09090d;
       font-family:Arial,sans-serif;
     }
 
+    .glow{
+      position:fixed;
+      z-index:-1;
+      border-radius:50%;
+      filter:blur(85px);
+      opacity:.22;
+      pointer-events:none;
+      animation:float 9s ease-in-out infinite;
+    }
+
+    .glow.one{
+      width:330px;
+      height:330px;
+      top:-130px;
+      left:-100px;
+      background:var(--purple);
+    }
+
+    .glow.two{
+      width:360px;
+      height:360px;
+      right:-130px;
+      bottom:-150px;
+      background:var(--blue);
+      animation-delay:-4s;
+    }
+
+    .noise{
+      position:fixed;
+      z-index:-1;
+      inset:0;
+      opacity:.18;
+      background-image:radial-gradient(rgba(255,255,255,.25) .6px,transparent .6px);
+      background-size:6px 6px;
+      mask-image:linear-gradient(to bottom,black,transparent);
+      pointer-events:none;
+    }
+
     main{
-      width:min(930px,calc(100% - 32px));
-      padding:32px 0;
+      width:min(1120px,calc(100% - 40px));
+      margin:auto;
+      padding:58px 0 35px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:48px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#f4f1ff;
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+
+    .brand-mark{
+      display:grid;
+      place-items:center;
+      width:30px;
+      height:30px;
+      border:1px solid rgba(255,215,90,.55);
+      border-radius:10px;
+      color:#221900;
+      background:linear-gradient(135deg,#ffe89a,#ffc92f);
+      box-shadow:0 0 22px rgba(255,211,72,.28);
+    }
+
+    .online{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      padding:8px 11px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:#d6d5dc;
+      background:rgba(255,255,255,.05);
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#56e9a7;
+      box-shadow:0 0 12px #56e9a7;
     }
 
     .eyebrow{
-      color:#ffd45f;
-      font-size:12px;
-      font-weight:800;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:7px 11px;
+      border:1px solid rgba(255,215,90,.28);
+      border-radius:999px;
+      color:#ffe484;
+      background:rgba(255,215,90,.08);
+      font-size:11px;
+      font-weight:900;
       letter-spacing:.8px;
     }
 
     h1{
-      margin:7px 0 8px;
-      color:#fff0b8;
-      font-size:38px;
+      max-width:760px;
+      margin:17px 0 13px;
+      font-size:clamp(37px,6vw,68px);
+      line-height:1;
+      letter-spacing:-2.6px;
     }
 
-    .sub{
-      margin:0 0 28px;
-      color:#c4c1c9;
+    h1 span{
+      color:transparent;
+      background:linear-gradient(100deg,#ffe99a,#ffd34b 40%,#c084fc 82%);
+      background-clip:text;
+      -webkit-background-clip:text;
+    }
+
+    .intro{
+      max-width:520px;
+      margin:0 0 35px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.55;
     }
 
     .grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:15px;
+      gap:16px;
     }
 
     .tool{
-      min-height:220px;
+      position:relative;
+      min-height:290px;
       display:flex;
       flex-direction:column;
+      overflow:hidden;
       padding:20px;
-      border:1px solid #3c3b42;
-      border-radius:15px;
-      background:linear-gradient(145deg,#1b1a20,#151519);
-      color:inherit;
+      border:1px solid var(--line);
+      border-radius:22px;
+      color:var(--text);
       text-decoration:none;
-      transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+      background:linear-gradient(
+        145deg,
+        rgba(35,34,44,.86),
+        rgba(15,15,20,.89)
+      );
+      box-shadow:0 17px 37px rgba(0,0,0,.18);
+      isolation:isolate;
+      transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
     }
 
+    .tool::before{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      inset:-70px -90px auto auto;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      opacity:.23;
+      filter:blur(14px);
+      transition:opacity .22s ease,transform .22s ease;
+    }
+
+    .tool.one::before{background:var(--yellow)}
+    .tool.two::before{background:var(--purple)}
+    .tool.three::before{background:var(--blue)}
+
     .tool:hover{
-      transform:translateY(-5px);
-      border-color:#f5c84f;
-      box-shadow:0 14px 30px rgba(0,0,0,.36);
+      transform:translateY(-8px) rotate(-.3deg);
+      border-color:rgba(255,255,255,.34);
+      box-shadow:0 23px 42px rgba(0,0,0,.35);
+    }
+
+    .tool:hover::before{
+      opacity:.45;
+      transform:scale(1.2);
+    }
+
+    .number-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:32px;
     }
 
     .number{
-      color:#987813;
-      font-size:43px;
+      color:rgba(255,255,255,.12);
+      font-size:49px;
       font-weight:900;
+      letter-spacing:-3px;
       line-height:1;
-      margin-bottom:17px;
+    }
+
+    .icon{
+      display:grid;
+      place-items:center;
+      width:45px;
+      height:45px;
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:15px;
+      background:rgba(255,255,255,.08);
+      font-size:22px;
     }
 
     .tool h2{
-      margin:0 0 10px;
-      color:#fff0b8;
-      font-size:18px;
+      margin:0 0 11px;
+      font-size:20px;
+      line-height:1.15;
     }
 
     .tool p{
       margin:0;
-      color:#c8c5cc;
-      line-height:1.48;
+      color:#c3c2cc;
+      font-size:14px;
+      line-height:1.52;
     }
 
     .open{
@@ -94,84 +258,138 @@
       align-items:center;
       justify-content:space-between;
       margin-top:auto;
-      padding-top:18px;
-      color:#ffd45f;
-      font-size:11px;
+      padding-top:22px;
+      color:#f8f7fd;
+      font-size:12px;
       font-weight:900;
+      letter-spacing:.15px;
     }
 
     .arrow{
       display:grid;
       place-items:center;
-      width:30px;
-      height:30px;
-      border-radius:50%;
-      color:#271c03;
-      background:#ffd45f;
-      font-size:18px;
-      transition:transform .18s ease;
+      width:35px;
+      height:35px;
+      border-radius:12px;
+      color:#17130a;
+      background:var(--yellow);
+      font-size:20px;
+      box-shadow:0 7px 17px rgba(255,215,90,.23);
+      transition:transform .2s ease;
     }
 
-    .tool:hover .arrow{transform:translateX(4px)}
+    .tool.two .arrow{
+      color:#fff;
+      background:#a855f7;
+      box-shadow:0 7px 17px rgba(168,85,247,.25);
+    }
+
+    .tool.three .arrow{
+      color:#06151e;
+      background:#58caff;
+      box-shadow:0 7px 17px rgba(54,184,255,.25);
+    }
+
+    .tool:hover .arrow{transform:translateX(5px)}
 
     footer{
-      margin-top:21px;
-      color:#918d95;
-      text-align:center;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:25px;
+      color:#888692;
       font-size:11px;
     }
 
-    @media(max-width:750px){
-      body{display:block}
+    @keyframes float{
+      50%{transform:translate(40px,35px) scale(1.12)}
+    }
 
-      main{
-        width:min(430px,calc(100% - 32px));
-        padding:36px 0;
-      }
+    @media(max-width:850px){
+      main{width:min(620px,calc(100% - 32px))}
+      .grid{grid-template-columns:1fr}
+      .tool{min-height:220px}
+      .number-row{margin-bottom:20px}
+    }
 
-      h1{font-size:31px}
-
-      .grid{
-        grid-template-columns:1fr;
-        gap:12px;
-      }
-
-      .tool{min-height:175px}
+    @media(max-width:500px){
+      main{padding-top:25px}
+      .topbar{margin-bottom:35px}
+      .online{display:none}
+      h1{letter-spacing:-1.8px}
+      .intro{font-size:14px}
+      .tool{border-radius:18px}
+      footer{display:block;line-height:1.8}
     }
   </style>
 </head>
 
 <body>
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+  <div class="noise"></div>
+
   <main>
-    <div class="eyebrow">MARKETING ADS SG328</div>
-    <h1>Pilih Dashboard</h1>
-    <p class="sub">Pilih tools yang ingin kamu gunakan.</p>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">✦</div>
+        MARKETING ADS SG328
+      </div>
+
+      <div class="online">
+        <span class="dot"></span>
+        SYSTEM ONLINE
+      </div>
+    </header>
+
+    <div class="eyebrow">✦ ADS MANAGEMENT TOOLS</div>
+
+    <h1>Satu tempat untuk<br><span>semua laporan ads.</span></h1>
+
+    <p class="intro">
+      Pilih dashboard yang ingin kamu gunakan untuk memantau performa campaign dengan lebih cepat.
+    </p>
 
     <section class="grid">
-      <a class="tool" href="./spending-per-jam.html">
-        <div class="number">01</div>
-        <h2>Total Spending Per Jam</h2>
-        <p>Bandingkan spend jam sebelumnya dengan jam sekarang secara otomatis.</p>
+      <a class="tool one" href="./spending-per-jam.html">
+        <div class="number-row">
+          <div class="number">01</div>
+          <div class="icon">⚡</div>
+        </div>
+
+        <h2>Total Spending<br>Per Jam</h2>
+        <p>Bandingkan spend sebelumnya dan sekarang secara otomatis.</p>
+
         <div class="open">
           <span>BUKA DASHBOARD</span>
           <span class="arrow">→</span>
         </div>
       </a>
 
-      <a class="tool" href="./filter-ads-meta.html">
-        <div class="number">02</div>
-        <h2>Filter Ads Meta</h2>
+      <a class="tool two" href="./filter-ads-meta.html">
+        <div class="number-row">
+          <div class="number">02</div>
+          <div class="icon">⌘</div>
+        </div>
+
+        <h2>Filter Ads<br>Meta</h2>
         <p>Filter campaign berdasarkan CPR, spend, budget, dan status iklan.</p>
+
         <div class="open">
           <span>BUKA FILTER ADS</span>
           <span class="arrow">→</span>
         </div>
       </a>
 
-      <a class="tool" href="./tiktok-report.html">
-        <div class="number">03</div>
-        <h2>TikTok Report</h2>
+      <a class="tool three" href="./tiktok-report.html">
+        <div class="number-row">
+          <div class="number">03</div>
+          <div class="icon">◉</div>
+        </div>
+
+        <h2>TikTok<br>Report</h2>
         <p>Buat laporan campaign TikTok secara cepat dari data RAW.</p>
+
         <div class="open">
           <span>BUKA TIKTOK REPORT</span>
           <span class="arrow">→</span>
@@ -179,7 +397,10 @@
       </a>
     </section>
 
-    <footer>Made By Mr.Sambo</footer>
+    <footer>
+      <span>© 2026 Marketing Ads SG328</span>
+      <span>Made By Mr.Sambo</span>
+    </footer>
   </main>
 </body>
 </html>
