@@ -24,11 +24,8 @@
 
 <body>
 <main>
-  <h1>FILTER <span>IKLAN ADS EDUTOTO</span></h1>
-
-  <p class="sub">
-    Parser otomatis membaca campaign dari nomor akun dalam tanda kurung,
-    misalnya <b>(1281)</b>, <b>(0041)</b>, atau <b>(4157)</b>.
+  <h1>FILTER <span>IKLAN ADS MKT328</span></h1>
+  
   </p>
 
   <section class="card">
@@ -76,8 +73,8 @@
         <input id="accountFilter" type="search" placeholder="Contoh: 1281">
       </label>
 
-      <button class="primary" id="process">âš¡ FILTER SEKARANG</button>
-      <button id="clear">âœ• HAPUS DATA</button>
+      <button class="primary" id="process">⚡ FILTER SEKARANG</button>
+      <button id="clear">✕ HAPUS DATA</button>
     </div>
   </section>
 
@@ -120,7 +117,7 @@
         minimumFractionDigits:2,
         maximumFractionDigits:2
       })
-    : 'â€”';
+    : '—';
 
   function num(value){
     if(value == null) return null;
@@ -188,7 +185,7 @@
 
     const beforeGmt = firstLine.split(/GMT/i)[0].trim();
 
-    return beforeGmt || 'â€”';
+    return beforeGmt || '—';
   }
 
   function parse(raw){
@@ -229,7 +226,7 @@
 
       const gmt = gmtMatch
         ? gmtMatch[1].replace(/\s/g,'')
-        : 'â€”';
+        : '—';
 
       /*
         Budget mengambil nominal dolar pertama pada judul campaign.
@@ -319,7 +316,7 @@
         label:item.preparing
           ? 'PREPARING'
           : item.active
-            ? 'ACTIVE â€” BELUM ADA SPEND'
+            ? 'ACTIVE — BELUM ADA SPEND'
             : 'BELUM ADA DATA',
         note:'Belum ada spend atau CPR untuk dianalisis.'
       };
