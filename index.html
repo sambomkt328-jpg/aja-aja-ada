@@ -6,151 +6,137 @@
   <title>Marketing Ads SG328</title>
 
   <style>
-    :root{
-      --bg:#0d0d0e;
-      --card:#18181c;
-      --line:#3d3c40;
-      --gold:#f0c85f;
-      --gold-light:#fff0b6;
-      --text:#fff;
-      --muted:#aaa;
-    }
-
     *{box-sizing:border-box}
 
     body{
-      min-height:100vh;
       margin:0;
+      min-width:320px;
+      min-height:100vh;
       display:grid;
       place-items:center;
       background:
-        radial-gradient(circle at top right,#33270d 0%,transparent 32%),
-        radial-gradient(circle at bottom left,#181818 0%,transparent 36%),
-        var(--bg);
-      color:var(--text);
+        radial-gradient(circle at 74% 2%,rgba(166,118,18,.17),transparent 27%),
+        linear-gradient(135deg,#08080a,#111115);
+      color:#f8f7f8;
       font-family:Arial,sans-serif;
     }
 
     main{
-      width:min(100%,1100px);
-      padding:28px 20px;
+      width:min(930px,calc(100% - 32px));
+      padding:32px 0;
     }
 
     .eyebrow{
-      color:var(--gold);
+      color:#ffd45f;
       font-size:12px;
-      font-weight:bold;
-      letter-spacing:.12em;
+      font-weight:800;
+      letter-spacing:.8px;
     }
 
     h1{
-      margin:8px 0 8px;
-      color:var(--gold-light);
-      font-size:clamp(28px,5vw,46px);
+      margin:7px 0 8px;
+      color:#fff0b8;
+      font-size:38px;
     }
 
     .sub{
-      margin:0 0 30px;
-      color:var(--muted);
+      margin:0 0 28px;
+      color:#c4c1c9;
     }
 
     .grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:16px;
+      gap:15px;
     }
 
-    a{
-      text-decoration:none;
-      color:inherit;
-    }
-
-    .menu{
-      position:relative;
-      min-height:245px;
-      overflow:hidden;
+    .tool{
+      min-height:220px;
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      padding:21px;
-      background:linear-gradient(145deg,#202025,#151518);
-      border:1px solid var(--line);
-      border-radius:16px;
-      transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+      padding:20px;
+      border:1px solid #3c3b42;
+      border-radius:15px;
+      background:linear-gradient(145deg,#1b1a20,#151519);
+      color:inherit;
+      text-decoration:none;
+      transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
     }
 
-    .menu:hover{
-      transform:translateY(-7px);
-      border-color:var(--gold);
-      box-shadow:0 18px 35px rgba(0,0,0,.42);
+    .tool:hover{
+      transform:translateY(-5px);
+      border-color:#f5c84f;
+      box-shadow:0 14px 30px rgba(0,0,0,.36);
     }
 
     .number{
-      color:#705718;
-      font-size:48px;
-      font-weight:bold;
+      color:#987813;
+      font-size:43px;
+      font-weight:900;
       line-height:1;
+      margin-bottom:17px;
     }
 
-    .menu h2{
-      margin:18px 0 9px;
-      color:var(--gold-light);
-      font-size:20px;
+    .tool h2{
+      margin:0 0 10px;
+      color:#fff0b8;
+      font-size:18px;
     }
 
-    .menu p{
+    .tool p{
       margin:0;
-      color:var(--muted);
-      line-height:1.5;
+      color:#c8c5cc;
+      line-height:1.48;
     }
 
     .open{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      margin-top:22px;
-      color:var(--gold);
-      font-size:12px;
-      font-weight:bold;
+      margin-top:auto;
+      padding-top:18px;
+      color:#ffd45f;
+      font-size:11px;
+      font-weight:900;
     }
 
     .arrow{
       display:grid;
       place-items:center;
-      width:32px;
-      height:32px;
+      width:30px;
+      height:30px;
       border-radius:50%;
-      background:var(--gold);
-      color:#1c1402;
+      color:#271c03;
+      background:#ffd45f;
       font-size:18px;
-      transition:transform .2s ease;
+      transition:transform .18s ease;
     }
 
-    .menu:hover .arrow{
-      transform:translateX(5px);
-    }
+    .tool:hover .arrow{transform:translateX(4px)}
 
     footer{
-      margin-top:25px;
-      color:#777;
+      margin-top:21px;
+      color:#918d95;
       text-align:center;
-      font-size:12px;
+      font-size:11px;
     }
 
-    @media(max-width:760px){
+    @media(max-width:750px){
       body{display:block}
 
       main{
-        padding:35px 14px;
+        width:min(430px,calc(100% - 32px));
+        padding:36px 0;
       }
+
+      h1{font-size:31px}
 
       .grid{
         grid-template-columns:1fr;
+        gap:12px;
       }
 
-      .menu{
-        min-height:190px;
-      }
+      .tool{min-height:175px}
     }
   </style>
 </head>
@@ -162,47 +148,34 @@
     <p class="sub">Pilih tools yang ingin kamu gunakan.</p>
 
     <section class="grid">
-      <a href="./spending-per-jam.html">
-        <article class="menu">
-          <div>
-            <div class="number">01</div>
-            <h2>Total Spending Per Jam</h2>
-            <p>Bandingkan spend jam sebelumnya dengan jam sekarang secara otomatis.</p>
-          </div>
-
-         <a class="dashboard-link" href="./spending-per-jam.html">
-  <span>BUKA DASHBOARD</span>
-  <b>→</b>
-</a>
-
-      <a href="./filter-ads-meta.html">
-        <article class="menu">
-          <div>
-            <div class="number">02</div>
-            <h2>Filter Ads Meta</h2>
-            <p>Filter campaign berdasarkan CPR, spend, budget, dan status iklan.</p>
-          </div>
-
-          <div class="open">
-            BUKA FILTER ADS
-            <div class="arrow">→</div>
-          </div>
-        </article>
+      <a class="tool" href="./spending-per-jam.html">
+        <div class="number">01</div>
+        <h2>Total Spending Per Jam</h2>
+        <p>Bandingkan spend jam sebelumnya dengan jam sekarang secara otomatis.</p>
+        <div class="open">
+          <span>BUKA DASHBOARD</span>
+          <span class="arrow">→</span>
+        </div>
       </a>
 
-      <a href="./tiktok-report.html">
-        <article class="menu">
-          <div>
-            <div class="number">03</div>
-            <h2>TikTok Report</h2>
-            <p>Buat laporan campaign TikTok secara cepat dari data RAW.</p>
-          </div>
+      <a class="tool" href="./filter-ads-meta.html">
+        <div class="number">02</div>
+        <h2>Filter Ads Meta</h2>
+        <p>Filter campaign berdasarkan CPR, spend, budget, dan status iklan.</p>
+        <div class="open">
+          <span>BUKA FILTER ADS</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
 
-          <div class="open">
-            BUKA TIKTOK REPORT
-            <div class="arrow">→</div>
-          </div>
-        </article>
+      <a class="tool" href="./tiktok-report.html">
+        <div class="number">03</div>
+        <h2>TikTok Report</h2>
+        <p>Buat laporan campaign TikTok secara cepat dari data RAW.</p>
+        <div class="open">
+          <span>BUKA TIKTOK REPORT</span>
+          <span class="arrow">→</span>
+        </div>
       </a>
     </section>
 
