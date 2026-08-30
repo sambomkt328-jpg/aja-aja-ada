@@ -300,6 +300,143 @@
       .table-card{padding:12px}
       .card{padding:13px}
     }
+    /* Modern visual layer — rumus dan JavaScript di bawah tetap sama. */
+    body{
+      background:
+        radial-gradient(circle at 7% 0%,rgba(168,85,247,.19),transparent 26%),
+        radial-gradient(circle at 92% 10%,rgba(255,205,76,.15),transparent 24%),
+        radial-gradient(circle at 56% 100%,rgba(48,196,255,.10),transparent 30%),
+        #09090e;
+    }
+
+    main{padding-top:45px}
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:7px 11px;
+      border:1px solid rgba(255,212,95,.3);
+      border-radius:999px;
+      background:rgba(255,212,95,.07);
+    }
+
+    h1{
+      margin-top:14px;
+      font-size:clamp(29px,4vw,45px);
+      letter-spacing:-1.7px;
+    }
+
+    .made{color:#b9b6c2}
+
+    .card{
+      border-color:rgba(255,255,255,.13);
+      border-radius:20px;
+      background:linear-gradient(145deg,rgba(31,30,41,.88),rgba(17,17,24,.9));
+      box-shadow:0 18px 40px rgba(0,0,0,.18);
+      backdrop-filter:blur(14px);
+    }
+
+    .card-title{letter-spacing:.35px}
+
+    textarea{
+      border-radius:14px;
+      background:rgba(7,7,11,.72);
+      border-color:#484754;
+    }
+
+    .actions{margin:20px 0}
+
+    button{
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      border-radius:12px;
+      transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+    }
+
+    button::after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      width:0;
+      height:0;
+      top:50%;
+      left:50%;
+      border-radius:50%;
+      background:rgba(255,255,255,.28);
+      transform:translate(-50%,-50%);
+      transition:width .42s ease,height .42s ease;
+    }
+
+    button:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.34)}
+    button:active{transform:translateY(1px) scale(.97)}
+    button:active::after{width:270px;height:270px}
+
+    .primary{
+      background:linear-gradient(135deg,#ffe99f,#f8c53f);
+      box-shadow:0 7px 20px rgba(255,207,72,.24);
+    }
+
+    .stats{gap:12px}
+
+    .stat{
+      position:relative;
+      overflow:hidden;
+      min-height:88px;
+      border-color:rgba(255,255,255,.14);
+      border-radius:15px;
+      background:linear-gradient(145deg,#1d1c24,#131318);
+      transition:transform .18s ease,border-color .18s ease;
+    }
+
+    .stat::before{
+      content:"";
+      position:absolute;
+      top:-58px;
+      right:-45px;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:rgba(255,211,83,.07);
+      filter:blur(6px);
+    }
+
+    .stat:hover{transform:translateY(-3px);border-color:rgba(255,212,95,.45)}
+
+    .stat.hour{
+      border-color:#287e58;
+      background:linear-gradient(135deg,#0b3021,#10432d);
+      box-shadow:inset 0 1px 0 rgba(119,255,188,.08);
+    }
+
+    .table-wrap{
+      border-radius:14px;
+      border-color:#3c3a44;
+      scrollbar-color:#7c7885 #1b1a20;
+    }
+
+    th{background:#25242d;box-shadow:0 1px 0 #4c4955}
+    tr:hover td{background:#211f27}
+
+    .warning-card{
+      border-color:rgba(255,125,106,.5);
+      background:linear-gradient(145deg,rgba(49,23,28,.78),rgba(22,17,23,.9));
+    }
+
+    .warning-item{
+      border-radius:14px;
+      border-color:#843d38;
+      background:linear-gradient(135deg,#391a1c,#231317);
+    }
+
+    @media(max-width:900px){main{padding-top:29px}}
+
+    @media(max-width:520px){
+      .card{border-radius:16px}
+      .stat{min-height:78px}
+      h1{letter-spacing:-1px}
+    }
   </style>
 </head>
 
