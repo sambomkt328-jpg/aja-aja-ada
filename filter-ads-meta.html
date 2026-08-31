@@ -298,16 +298,189 @@
 
       .table-wrap{max-height:480px}
     }
+
+    /* Dashboard refresh */
+    :root{
+      --bg:#080b12;
+      --card:rgba(19,24,36,.82);
+      --line:rgba(148,163,184,.18);
+      --text:#edf2ff;
+      --muted:#93a0b7;
+      --gold:#ffcc66;
+      --gold-light:#fff3cf;
+    }
+
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(900px 450px at 5% -10%,rgba(255,193,81,.16),transparent 64%),
+        radial-gradient(800px 460px at 100% 0,rgba(61,112,255,.15),transparent 66%),
+        var(--bg);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    main{max-width:1560px;padding:34px 24px 64px}
+
+    .hero{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:20px;
+      margin:0 0 22px;
+    }
+
+    h1{
+      font-size:clamp(25px,3vw,36px);
+      letter-spacing:-1.4px;
+      line-height:1.05;
+    }
+
+    h1::before{
+      content:"DASHBOARD KAMPANYE";
+      display:block;
+      margin:0 0 8px;
+      color:#98a6be;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:1.8px;
+    }
+
+    .hero-copy{color:var(--muted);font-size:13px;text-align:right;line-height:1.5}
+    .hero-copy strong{display:block;color:#cbd5e1;font-size:12px}
+
+    .card{
+      border-color:var(--line);
+      border-radius:18px;
+      background:linear-gradient(145deg,rgba(27,33,47,.93),rgba(14,18,28,.88));
+      box-shadow:0 18px 45px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.03);
+      padding:18px;
+    }
+
+    .controls-title,.table-title{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      margin:0 0 13px;
+      color:#f8fafc;
+      font-size:14px;
+      font-weight:800;
+    }
+    .controls-title::before,.table-title::before{
+      content:"";
+      width:8px;height:8px;border-radius:50%;background:var(--gold);
+      box-shadow:0 0 14px rgba(255,204,102,.72);
+    }
+
+    textarea{min-height:245px;border-color:rgba(148,163,184,.22);border-radius:13px;background:#0a0e17;color:#dbeafe}
+    .bar{gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+    .field{font-weight:700;color:#9ba8bf}
+    .field input,.field select{min-height:42px;border-color:rgba(148,163,184,.22);border-radius:10px;background:#0a0e17;color:#eaf0fb}
+    button{min-height:42px;border-radius:10px;background:#202838;border-color:rgba(148,163,184,.24)}
+    button.primary{background:linear-gradient(135deg,#ffd87d,#f3ae3e);box-shadow:0 8px 20px rgba(243,174,62,.2)}
+
+    .summary{gap:12px}
+    .sum{border-color:var(--line);border-radius:15px;background:linear-gradient(145deg,rgba(29,36,51,.9),rgba(17,22,33,.9));padding:15px}
+    .sum small{font-weight:700;text-transform:uppercase;font-size:10px;letter-spacing:.7px}
+    .sum b{font-size:24px;letter-spacing:-.5px}
+
+    .table-card{padding:0!important;overflow:hidden}
+    .table-heading{display:flex;justify-content:space-between;align-items:center;padding:18px 19px 14px}
+    .table-heading .meta{margin:0;font-size:11px}
+    .table-wrap{border-width:1px 0 0;border-radius:0;max-height:640px;background:#0d121d}
+    table{background:#0d121d}
+    th,td{padding:14px 12px;border-color:rgba(148,163,184,.13)}
+    th{background:#171e2c;color:#aab7cb;text-transform:uppercase;letter-spacing:.45px;font-size:10px}
+    tr:hover td{background:rgba(44,57,81,.48)}
+    .badge{padding:6px 9px;border:1px solid rgba(255,255,255,.08);font-size:10px;letter-spacing:.15px}
+    .meta,.note{color:#9ba8bf}
+
+    @media(max-width:700px){
+      main{padding:21px 12px 40px}
+      .hero{align-items:flex-start;flex-direction:column;margin-bottom:17px}
+      .hero-copy{text-align:left}
+      .card{border-radius:15px;padding:14px}
+      .bar{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .bar button{grid-column:span 2}
+      .summary{gap:9px}
+      .sum{padding:12px}
+      .sum b{font-size:20px}
+    }
+
+    /* Tema modern: warna hidup, namun tetap clean */
+    :root{
+      --bg:#080a16;
+      --card:rgba(17,22,43,.78);
+      --line:rgba(154,169,232,.18);
+      --text:#f4f6ff;
+      --muted:#9aa5c5;
+      --gold:#ffd166;
+      --gold-light:#fff1be;
+      --red:#ff7697;
+      --green:#55e5b0;
+      --blue:#74c7ff;
+      --yellow:#ffd166;
+    }
+    body{
+      position:relative;
+      overflow-x:hidden;
+      background:
+        radial-gradient(720px 420px at 3% -4%,rgba(113,75,255,.30),transparent 67%),
+        radial-gradient(700px 430px at 103% 13%,rgba(0,190,255,.20),transparent 66%),
+        radial-gradient(620px 360px at 48% 110%,rgba(238,83,173,.12),transparent 70%),
+        var(--bg);
+    }
+    main{position:relative;max-width:1420px}
+    h1{background:linear-gradient(100deg,#fff7d3 0%,#ffd166 42%,#ac9bff 75%,#75d8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    h1 span{color:inherit}
+    h1::before{color:#8f9bbb}
+    .hero-copy strong{color:#d7e4ff}
+    .card{
+      position:relative;
+      border-color:rgba(159,177,255,.20);
+      background:linear-gradient(145deg,rgba(29,36,69,.80),rgba(13,17,34,.88));
+      box-shadow:0 18px 50px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.055);
+      backdrop-filter:blur(15px);
+    }
+    .card::before{
+      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:linear-gradient(120deg,rgba(135,114,255,.09),transparent 32%,rgba(65,210,255,.06));
+    }
+    .card>*{position:relative}
+    .controls-title,.table-title{color:#f5f7ff}
+    .controls-title::before,.table-title::before{background:linear-gradient(135deg,#b794ff,#62d8ff);box-shadow:0 0 15px rgba(116,199,255,.8)}
+    textarea,.field input,.field select{background:rgba(7,10,24,.77);border-color:rgba(147,166,232,.26)}
+    textarea:focus,.field input:focus,.field select:focus{border-color:#79d5ff;box-shadow:0 0 0 3px rgba(90,202,255,.13)}
+    .field{color:#bac5e5}
+    button{background:linear-gradient(135deg,#252b4c,#1c2340);border-color:rgba(151,169,237,.32)}
+    button:hover{background:linear-gradient(135deg,#333a66,#252e55)}
+    button.primary{color:#161023;background:linear-gradient(135deg,#ffd76d,#ffb86b 48%,#e8a7ff);box-shadow:0 8px 24px rgba(236,150,255,.22)}
+    .sum{border-color:rgba(153,174,239,.22);background:linear-gradient(145deg,rgba(34,41,74,.86),rgba(20,24,47,.90));box-shadow:inset 0 1px rgba(255,255,255,.04)}
+    .sum:nth-child(2)::after{background:radial-gradient(circle,rgba(116,199,255,.28),transparent 68%)}
+    .sum:nth-child(3)::after{background:radial-gradient(circle,rgba(171,126,255,.25),transparent 68%)}
+    .sum:nth-child(4)::after{background:radial-gradient(circle,rgba(255,178,107,.25),transparent 68%)}
+    .sum b{color:#ffe391}
+    .table-wrap{background:rgba(8,11,25,.72);border-color:rgba(151,169,237,.20)}
+    table{background:transparent}
+    th{background:linear-gradient(90deg,#232946,#272445);color:#dce4ff}
+    th,td{border-color:rgba(151,169,237,.13)}
+    tr:hover td{background:rgba(72,83,141,.21)}
+    .watch{background:rgba(66,131,226,.22);color:#a6dcff}
+    .active{background:rgba(117,102,219,.20);color:#d7d0ff}
+    .go{background:rgba(46,190,139,.19);color:#8ff2c5}
+    .mahal{background:rgba(230,74,109,.20);color:#ffb2c3}
+    .hold,.hold-history,.scheduled{background:rgba(244,174,61,.18);color:#ffe29c}
   </style>
 </head>
 
 <body>
 <main>
-  <h1>FILTER <span>IKLAN ADS MKT328</span></h1>
-
-  </p>
+  <header class="hero">
+    <h1>FILTER <span>IKLAN ADS MKT328</span></h1>
+    <div class="hero-copy"><strong>Analisis performa kampanye</strong>Paste data RAW untuk menilai campaign dengan cepat.</div>
+  </header>
 
   <section class="card">
+    <div class="controls-title">Data & parameter filter</div>
     <textarea id="raw" placeholder="Paste data RAW campaign di sini..."></textarea>
 
     <div class="bar">
@@ -359,8 +532,11 @@
 
   <section class="summary" id="summary"></section>
 
-  <section class="card" style="padding:12px">
-    <b>HASIL FILTER IKLAN ADS</b>
+  <section class="card table-card">
+    <div class="table-heading">
+      <div class="table-title">Hasil filter iklan ads</div>
+      <div class="meta">Scroll tabel untuk melihat data lengkap</div>
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -368,7 +544,7 @@
           <tr>
             <th>Status</th>
             <th>No Akun</th>
-            <th>Situs / Agency</th>
+            <th>Situs</th>
             <th>Campaign & Link</th>
             <th>Budget</th>
             <th>Spend Saat Ini</th>
@@ -455,18 +631,6 @@
     return 'LAINNYA';
   }
 
-  function detectAgency(firstLine){
-    const upper = firstLine.toUpperCase();
-
-    if(upper.startsWith('EDUTOTOXBGPM')) return 'BGPM';
-    if(upper.startsWith('EDUTOTOXLUNA')) return 'LUNA';
-    if(upper.startsWith('ZUMYXEDU')) return 'ZUMY';
-
-    const beforeGmt = firstLine.split(/GMT/i)[0].trim();
-
-    return beforeGmt || '—';
-  }
-
   function parse(raw){
     const lines = raw.split(/\r?\n/);
 
@@ -499,8 +663,6 @@
 
       const account = accountMatch[1];
       const site = detectSite(first);
-      const agency = detectAgency(first);
-
       const gmtMatch = first.match(/GMT\s*([+-]\s*\d+)/i);
 
       const gmt = gmtMatch
@@ -541,7 +703,6 @@
         first,
         account,
         site,
-        agency,
         gmt,
         budget,
         spend:num(valueOf(block,'SPEND')),
@@ -784,12 +945,10 @@
 
               <td>
                 <b style="font-size:16px">${item.account}</b>
-                <div class="meta">GMT ${item.gmt}</div>
               </td>
 
               <td>
                 <b>${item.site}</b>
-                <div class="meta">Agency: ${item.agency}</div>
               </td>
 
               <td class="name">
